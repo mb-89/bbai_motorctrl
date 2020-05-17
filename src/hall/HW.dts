@@ -10,136 +10,136 @@
 
 // Pin <-> offset definitions ----------------------------------------------------------------------
 
-#define P8.01_REG NONE      //  GND
-#define P8.02_REG NONE      //  GND
-#define P8.03_REG 0x179C    //  gpio1_24
-#define P8.04_REG 0x17A0    //  gpio1_25
-#define P8.05_REG 0x178C    //  gpio7_1
-#define P8.06_REG 0x1790    //  gpio7_2
-#define P8.07_REG 0x16EC    //  gpio6_5
-#define P8.08_REG 0x16F0    //  gpio6_6
-#define P8.09_REG 0x1698    //  gpio6_18
+#define P8_01_REG NONE      //  GND
+#define P8_02_REG NONE      //  GND
+#define P8_03_REG 0x179C    //  gpio1_24
+#define P8_04_REG 0x17A0    //  gpio1_25
+#define P8_05_REG 0x178C    //  gpio7_1
+#define P8_06_REG 0x1790    //  gpio7_2
+#define P8_07_REG 0x16EC    //  gpio6_5
+#define P8_08_REG 0x16F0    //  gpio6_6
+#define P8_09_REG 0x1698    //  gpio6_18
 
-#define P8.10_REG 0x16E8    //  gpio6_4
-#define P8.11_REG 0x1510    //  gpio3_11
-#define P8.12_REG 0x150C    //  gpio3_10
-#define P8.13_REG 0x1590    //  gpio4_11
-#define P8.14_REG 0x1598    //  gpio4_13
-#define P8.15A_REG 0x1570   //  gpio4_3
-#define P8.15B_REG 0x15B4   //  gpio4_27
-#define P8.16_REG 0x15BC    //  gpio4_29
-#define P8.17_REG 0x1624    //  gpio8_18
-#define P8.18_REG 0x1588    //  gpio4_9
-#define P8.19_REG 0x158C    //  gpio4_10
+#define P8_10_REG 0x16E8    //  gpio6_4
+#define P8_11_REG 0x1510    //  gpio3_11
+#define P8_12_REG 0x150C    //  gpio3_10
+#define P8_13_REG 0x1590    //  gpio4_11
+#define P8_14_REG 0x1598    //  gpio4_13
+#define P8_15A_REG 0x1570   //  gpio4_3
+#define P8_15B_REG 0x15B4   //  gpio4_27
+#define P8_16_REG 0x15BC    //  gpio4_29
+#define P8_17_REG 0x1624    //  gpio8_18
+#define P8_18_REG 0x1588    //  gpio4_9
+#define P8_19_REG 0x158C    //  gpio4_10
 
-#define P8.20_REG 0x1780    //  gpio6_30
-#define P8.21_REG 0x177C    //  gpio6_29
-#define P8.22_REG 0x1798    //  gpio1_23
-#define P8.23_REG 0x1794    //  gpio1_22
-#define P8.24_REG 0x1788    //  gpio7_0
-#define P8.25_REG 0x1784    //  gpio6_31
-#define P8.26_REG 0x15B8    //  gpio4_28
-#define P8.27A_REG 0x15D8   //  gpio4_23
-#define P8.27B_REG 0x1628   //  gpio8_19
-#define P8.28A_REG 0x15C8   //  gpio4_19
-#define P8.28B_REG 0x162C   //  gpio8_20
-#define P8.29A_REG 0x15D4   //  gpio4_22
-#define P8.29B_REG 0x1630   //  gpio8_21
+#define P8_20_REG 0x1780    //  gpio6_30
+#define P8_21_REG 0x177C    //  gpio6_29
+#define P8_22_REG 0x1798    //  gpio1_23
+#define P8_23_REG 0x1794    //  gpio1_22
+#define P8_24_REG 0x1788    //  gpio7_0
+#define P8_25_REG 0x1784    //  gpio6_31
+#define P8_26_REG 0x15B8    //  gpio4_28
+#define P8_27A_REG 0x15D8   //  gpio4_23
+#define P8_27B_REG 0x1628   //  gpio8_19
+#define P8_28A_REG 0x15C8   //  gpio4_19
+#define P8_28B_REG 0x162C   //  gpio8_20
+#define P8_29A_REG 0x15D4   //  gpio4_22
+#define P8_29B_REG 0x1630   //  gpio8_21
 
-#define P8.30A_REG 0x15CC   //  gpio4_20
-#define P8.30B_REG 0x1634   //  gpio8_22
-#define P8.31A_REG 0x1614   //  gpio8_14
-#define P8.31B_REG 0x173C   //  pr2_pru1_gpi0
-#define P8.32A_REG 0x1618   //  gpio8_15
-#define P8.32B_REG 0x1740   //  pr2_pru1_gpo0
-#define P8.33A_REG 0x1610   //  gpio8_13
-#define P8.33B_REG 0x14E8   //  gpio3_1
-#define P8.34A_REG 0x1608   //  gpio8_11
-#define P8.34B_REG 0x1564   //  gpio4_0
-#define P8.35A_REG 0x160C   //  gpio8_12
-#define P8.35B_REG 0x14E4   //  gpio3_0
-#define P8.36A_REG 0x1604   //  gpio8_10
-#define P8.36B_REG 0x1568   //  gpio4_1
-#define P8.37A_REG 0x15FC   //  gpio8_8
-#define P8.37B_REG 0x1738   //  vin4a_d17
-#define P8.38A_REG 0x1600   //  gpio8_9
-#define P8.38B_REG 0x1734   //  vin4a_d16
-#define P8.39_REG 0x15F4    //  gpio8_6
+#define P8_30A_REG 0x15CC   //  gpio4_20
+#define P8_30B_REG 0x1634   //  gpio8_22
+#define P8_31A_REG 0x1614   //  gpio8_14
+#define P8_31B_REG 0x173C   //  pr2_pru1_gpi0
+#define P8_32A_REG 0x1618   //  gpio8_15
+#define P8_32B_REG 0x1740   //  pr2_pru1_gpo0
+#define P8_33A_REG 0x1610   //  gpio8_13
+#define P8_33B_REG 0x14E8   //  gpio3_1
+#define P8_34A_REG 0x1608   //  gpio8_11
+#define P8_34B_REG 0x1564   //  gpio4_0
+#define P8_35A_REG 0x160C   //  gpio8_12
+#define P8_35B_REG 0x14E4   //  gpio3_0
+#define P8_36A_REG 0x1604   //  gpio8_10
+#define P8_36B_REG 0x1568   //  gpio4_1
+#define P8_37A_REG 0x15FC   //  gpio8_8
+#define P8_37B_REG 0x1738   //  vin4a_d17
+#define P8_38A_REG 0x1600   //  gpio8_9
+#define P8_38B_REG 0x1734   //  vin4a_d16
+#define P8_39_REG 0x15F4    //  gpio8_6
 
-#define P8.40_REG 0x15F8    //  gpio8_7
-#define P8.41_REG 0x15EC    //  gpio8_4
-#define P8.42_REG 0x15F0    //  gpio8_5
-#define P8.43_REG 0x15E4    //  gpio8_2
-#define P8.44_REG 0x15E8    //  gpio8_3
-#define P8.45A_REG 0x15DC   //  gpio8_0
-#define P8.45B_REG 0x161C   //  gpio8_16
-#define P8.46A_REG 0x15E0   //  gpio8_1
-#define P8.46B_REG 0x1638   //  gpio8_23
+#define P8_40_REG 0x15F8    //  gpio8_7
+#define P8_41_REG 0x15EC    //  gpio8_4
+#define P8_42_REG 0x15F0    //  gpio8_5
+#define P8_43_REG 0x15E4    //  gpio8_2
+#define P8_44_REG 0x15E8    //  gpio8_3
+#define P8_45A_REG 0x15DC   //  gpio8_0
+#define P8_45B_REG 0x161C   //  gpio8_16
+#define P8_46A_REG 0x15E0   //  gpio8_1
+#define P8_46B_REG 0x1638   //  gpio8_23
 
-#define P9.01_REG NONE      //  GND
-#define P9.02_REG NONE      //  GND
-#define P9.03_REG NONE      //  3v3
-#define P9.04_REG NONE      //  3v3
-#define P9.05_REG NONE      //  5v
-#define P9.06_REG NONE      //  5v
-#define P9.07_REG NONE      //  5v
-#define P9.08_REG NONE      //  5v
-#define P9.09_REG NONE      //  PWR
+#define P9_01_REG NONE      //  GND
+#define P9_02_REG NONE      //  GND
+#define P9_03_REG NONE      //  3v3
+#define P9_04_REG NONE      //  3v3
+#define P9_05_REG NONE      //  5v
+#define P9_06_REG NONE      //  5v
+#define P9_07_REG NONE      //  5v
+#define P9_08_REG NONE      //  5v
+#define P9_09_REG NONE      //  PWR
 
-#define P9.10_REG NONE      //  RESET
-#define P9.11A_REG 0x172C   //  pr2_pru0_gpo14
-#define P9.11B_REG 0x1620   //  gpio8_17
-#define P9.12_REG 0x16AC    //  gpio5_0
-#define P9.13A_REG 0x1730   //  pr2_pru0_gpo15
-#define P9.13B_REG 0x1680   //  gpio6_12
-#define P9.14_REG 0x15AC    //  gpio4_25
-#define P9.15_REG 0x1514    //  gpio3_12
-#define P9.16_REG 0x15B0    //  gpio4_26
-#define P9.17A_REG 0x17CC   //  gpio7_17
-#define P9.17B_REG 0x16B8   //  gpio5_3
-#define P9.18A_REG 0x17C8   //  gpio7_16
-#define P9.18B_REG 0x16B4   //  gpio5_2
-#define P9.19A_REG 0x1440   //  gpio7_3
-#define P9.19B_REG 0x157C   //  gpio4_6
+#define P9_10_REG NONE      //  RESET
+#define P9_11A_REG 0x172C   //  pr2_pru0_gpo14
+#define P9_11B_REG 0x1620   //  gpio8_17
+#define P9_12_REG 0x16AC    //  gpio5_0
+#define P9_13A_REG 0x1730   //  pr2_pru0_gpo15
+#define P9_13B_REG 0x1680   //  gpio6_12
+#define P9_14_REG 0x15AC    //  gpio4_25
+#define P9_15_REG 0x1514    //  gpio3_12
+#define P9_16_REG 0x15B0    //  gpio4_26
+#define P9_17A_REG 0x17CC   //  gpio7_17
+#define P9_17B_REG 0x16B8   //  gpio5_3
+#define P9_18A_REG 0x17C8   //  gpio7_16
+#define P9_18B_REG 0x16B4   //  gpio5_2
+#define P9_19A_REG 0x1440   //  gpio7_3
+#define P9_19B_REG 0x157C   //  gpio4_6
 
-#define P9.20A_REG 0x1444   //  gpio7_4
-#define P9.20B_REG 0x1578   //  gpio4_5
-#define P9.21A_REG 0x14F0   //  gpio3_3
-#define P9.21B_REG 0x17C4   //  gpio7_15
-#define P9.22A_REG 0x169C   //  gpio6_19
-#define P9.22B_REG 0x17C0   //  gpio7_14
-#define P9.23_REG 0x17B4    //  gpio7_11
-#define P9.24_REG 0x168C    //  gpio6_15
-#define P9.25_REG 0x1694    //  gpio6_17
-#define P9.26A_REG 0x1688   //  gpio6_14
-#define P9.26B_REG 0x1544   //  gpio3_24
-#define P9.27A_REG 0x15A0   //  gpio4_15
-#define P9.27B_REG 0x16B0   //  gpio5_1
-#define P9.28_REG 0x16E0    //  gpio4_17
-#define P9.29A_REG 0x16D8   //  gpio5_11
-#define P9.29B_REG 0x16A8   //  gpio7_30
+#define P9_20A_REG 0x1444   //  gpio7_4
+#define P9_20B_REG 0x1578   //  gpio4_5
+#define P9_21A_REG 0x14F0   //  gpio3_3
+#define P9_21B_REG 0x17C4   //  gpio7_15
+#define P9_22A_REG 0x169C   //  gpio6_19
+#define P9_22B_REG 0x17C0   //  gpio7_14
+#define P9_23_REG 0x17B4    //  gpio7_11
+#define P9_24_REG 0x168C    //  gpio6_15
+#define P9_25_REG 0x1694    //  gpio6_17
+#define P9_26A_REG 0x1688   //  gpio6_14
+#define P9_26B_REG 0x1544   //  gpio3_24
+#define P9_27A_REG 0x15A0   //  gpio4_15
+#define P9_27B_REG 0x16B0   //  gpio5_1
+#define P9_28_REG 0x16E0    //  gpio4_17
+#define P9_29A_REG 0x16D8   //  gpio5_11
+#define P9_29B_REG 0x16A8   //  gpio7_30
 
-#define P9.30_REG 0x16DC    //  gpio5_12
-#define P9.31A_REG 0x16D4   //  gpio5_10
-#define P9.31B_REG 0x16A4   //  gpio7_31
-#define P9.32_REG NONE      //  VADC
-#define P9.33_REG NONE      //  AIN4
-#define P9.34_REG NONE      //  AGND
-#define P9.35_REG NONE      //  AIN6
-#define P9.36_REG NONE      //  AIN5
-#define P9.37_REG NONE      //  AIN2
-#define P9.38_REG NONE      //  AIN3
-#define P9.39_REG NONE      //  AIN0
+#define P9_30_REG 0x16DC    //  gpio5_12
+#define P9_31A_REG 0x16D4   //  gpio5_10
+#define P9_31B_REG 0x16A4   //  gpio7_31
+#define P9_32_REG NONE      //  VADC
+#define P9_33_REG NONE      //  AIN4
+#define P9_34_REG NONE      //  AGND
+#define P9_35_REG NONE      //  AIN6
+#define P9_36_REG NONE      //  AIN5
+#define P9_37_REG NONE      //  AIN2
+#define P9_38_REG NONE      //  AIN3
+#define P9_39_REG NONE      //  AIN0
 
-#define P9.40_REG NONE      //  AIN1
-#define P9.41A_REG 0x16A0   //  gpio6_20
-#define P9.41B_REG 0x1580   //  gpio4_7
-#define P9.42A_REG 0x16E4   //  gpio4_18
-#define P9.42B_REG 0x159C   //  gpio4_14
-#define P9.43_REG NONE      //  GND
-#define P9.44_REG NONE      //  GND
-#define P9.45_REG NONE      //  GND
-#define P9.46_REG NONE      //  GND
+#define P9_40_REG NONE      //  AIN1
+#define P9_41A_REG 0x16A0   //  gpio6_20
+#define P9_41B_REG 0x1580   //  gpio4_7
+#define P9_42A_REG 0x16E4   //  gpio4_18
+#define P9_42B_REG 0x159C   //  gpio4_14
+#define P9_43_REG NONE      //  GND
+#define P9_44_REG NONE      //  GND
+#define P9_45_REG NONE      //  GND
+#define P9_46_REG NONE      //  GND
 
 // Modes and flags ---------------------------------------------------------------------------------
 
@@ -172,112 +172,112 @@
 // Default all to gpio-input
 &pins_default {  
  pinctrl-single,pins = < 
-  P8.03_REG     (MODE_GPIO|INPUTENABLE)
-  P8.01_REG     (MODE_GPIO|INPUTENABLE)
-  P8.02_REG     (MODE_GPIO|INPUTENABLE)
-  P8.03_REG     (MODE_GPIO|INPUTENABLE)
-  P8.04_REG     (MODE_GPIO|INPUTENABLE)
-  P8.05_REG     (MODE_GPIO|INPUTENABLE)
-  P8.06_REG     (MODE_GPIO|INPUTENABLE)
-  P8.07_REG     (MODE_GPIO|INPUTENABLE)
-  P8.08_REG     (MODE_GPIO|INPUTENABLE)
-  P8.09_REG     (MODE_GPIO|INPUTENABLE)
-  P8.10_REG     (MODE_GPIO|INPUTENABLE)
+  P8_03_REG     (MODE_GPIO|INPUTENABLE)
+  P8_01_REG     (MODE_GPIO|INPUTENABLE)
+  P8_02_REG     (MODE_GPIO|INPUTENABLE)
+  P8_03_REG     (MODE_GPIO|INPUTENABLE)
+  P8_04_REG     (MODE_GPIO|INPUTENABLE)
+  P8_05_REG     (MODE_GPIO|INPUTENABLE)
+  P8_06_REG     (MODE_GPIO|INPUTENABLE)
+  P8_07_REG     (MODE_GPIO|INPUTENABLE)
+  P8_08_REG     (MODE_GPIO|INPUTENABLE)
+  P8_09_REG     (MODE_GPIO|INPUTENABLE)
+  P8_10_REG     (MODE_GPIO|INPUTENABLE)
 
-  P8.11_REG     (MODE_GPIO|INPUTENABLE)
-  P8.12_REG     (MODE_GPIO|INPUTENABLE)
-  P8.13_REG     (MODE_GPIO|INPUTENABLE)
-  P8.14_REG     (MODE_GPIO|INPUTENABLE)
-  P8.15A_REG    (MODE_GPIO|INPUTENABLE)
-  P8.15B_REG    (MODE_OFF)
-  P8.16_REG     (MODE_GPIO|INPUTENABLE)
-  P8.17_REG     (MODE_GPIO|INPUTENABLE)
-  P8.18_REG     (MODE_GPIO|INPUTENABLE)
-  P8.19_REG     (MODE_GPIO|INPUTENABLE)
+  P8_11_REG     (MODE_GPIO|INPUTENABLE)
+  P8_12_REG     (MODE_GPIO|INPUTENABLE)
+  P8_13_REG     (MODE_GPIO|INPUTENABLE)
+  P8_14_REG     (MODE_GPIO|INPUTENABLE)
+  P8_15A_REG    (MODE_GPIO|INPUTENABLE)
+  P8_15B_REG    (MODE_OFF)
+  P8_16_REG     (MODE_GPIO|INPUTENABLE)
+  P8_17_REG     (MODE_GPIO|INPUTENABLE)
+  P8_18_REG     (MODE_GPIO|INPUTENABLE)
+  P8_19_REG     (MODE_GPIO|INPUTENABLE)
 
-  P8.20_REG     (MODE_GPIO|INPUTENABLE)
-  P8.21_REG     (MODE_GPIO|INPUTENABLE)
-  P8.22_REG     (MODE_GPIO|INPUTENABLE)
-  P8.23_REG     (MODE_GPIO|INPUTENABLE)
-  P8.24_REG     (MODE_GPIO|INPUTENABLE)
-  P8.25_REG     (MODE_GPIO|INPUTENABLE)
-  P8.26_REG     (MODE_GPIO|INPUTENABLE)
-  P8.27A_REG    (MODE_GPIO|INPUTENABLE)
-  P8.27B_REG    (MODE_OFF)
-  P8.28A_REG    (MODE_GPIO|INPUTENABLE)
-  P8.28B_REG    (MODE_OFF)
-  P8.29A_REG    (MODE_GPIO|INPUTENABLE)
-  P8.29B_REG    (MODE_OFF)
+  P8_20_REG     (MODE_GPIO|INPUTENABLE)
+  P8_21_REG     (MODE_GPIO|INPUTENABLE)
+  P8_22_REG     (MODE_GPIO|INPUTENABLE)
+  P8_23_REG     (MODE_GPIO|INPUTENABLE)
+  P8_24_REG     (MODE_GPIO|INPUTENABLE)
+  P8_25_REG     (MODE_GPIO|INPUTENABLE)
+  P8_26_REG     (MODE_GPIO|INPUTENABLE)
+  P8_27A_REG    (MODE_GPIO|INPUTENABLE)
+  P8_27B_REG    (MODE_OFF)
+  P8_28A_REG    (MODE_GPIO|INPUTENABLE)
+  P8_28B_REG    (MODE_OFF)
+  P8_29A_REG    (MODE_GPIO|INPUTENABLE)
+  P8_29B_REG    (MODE_OFF)
 
-  P8.30A_REG    (MODE_GPIO|INPUTENABLE)
-  P8.30B_REG    (MODE_OFF)
-  P8.31A_REG    (MODE_GPIO|INPUTENABLE)
-  P8.31B_REG    (MODE_OFF)
-  P8.32A_REG    (MODE_GPIO|INPUTENABLE)
-  P8.32B_REG    (MODE_OFF)
-  P8.33A_REG    (MODE_GPIO|INPUTENABLE)
-  P8.33B_REG    (MODE_OFF)
-  P8.34A_REG    (MODE_GPIO|INPUTENABLE)
-  P8.34B_REG    (MODE_OFF)
-  P8.35A_REG    (MODE_GPIO|INPUTENABLE)
-  P8.35B_REG    (MODE_OFF)
-  P8.36A_REG    (MODE_GPIO|INPUTENABLE)
-  P8.36B_REG    (MODE_OFF)
-  P8.37A_REG    (MODE_GPIO|INPUTENABLE)
-  P8.37B_REG    (MODE_OFF)
-  P8.38A_REG    (MODE_GPIO|INPUTENABLE)
-  P8.38B_REG    (MODE_OFF)
-  P8.39_REG     (MODE_GPIO|INPUTENABLE)
+  P8_30A_REG    (MODE_GPIO|INPUTENABLE)
+  P8_30B_REG    (MODE_OFF)
+  P8_31A_REG    (MODE_GPIO|INPUTENABLE)
+  P8_31B_REG    (MODE_OFF)
+  P8_32A_REG    (MODE_GPIO|INPUTENABLE)
+  P8_32B_REG    (MODE_OFF)
+  P8_33A_REG    (MODE_GPIO|INPUTENABLE)
+  P8_33B_REG    (MODE_OFF)
+  P8_34A_REG    (MODE_GPIO|INPUTENABLE)
+  P8_34B_REG    (MODE_OFF)
+  P8_35A_REG    (MODE_GPIO|INPUTENABLE)
+  P8_35B_REG    (MODE_OFF)
+  P8_36A_REG    (MODE_GPIO|INPUTENABLE)
+  P8_36B_REG    (MODE_OFF)
+  P8_37A_REG    (MODE_GPIO|INPUTENABLE)
+  P8_37B_REG    (MODE_OFF)
+  P8_38A_REG    (MODE_GPIO|INPUTENABLE)
+  P8_38B_REG    (MODE_OFF)
+  P8_39_REG     (MODE_GPIO|INPUTENABLE)
 
-  P8.40_REG     (MODE_GPIO|INPUTENABLE)
-  P8.41_REG     (MODE_GPIO|INPUTENABLE)
-  P8.42_REG     (MODE_GPIO|INPUTENABLE)
-  P8.43_REG     (MODE_GPIO|INPUTENABLE)
-  P8.44_REG     (MODE_GPIO|INPUTENABLE)
-  P8.45A_REG    (MODE_GPIO|INPUTENABLE)
-  P8.45B_REG    (MODE_OFF)
-  P8.46A_REG    (MODE_GPIO|INPUTENABLE)
-  P8.46B_REG    (MODE_OFF)
+  P8_40_REG     (MODE_GPIO|INPUTENABLE)
+  P8_41_REG     (MODE_GPIO|INPUTENABLE)
+  P8_42_REG     (MODE_GPIO|INPUTENABLE)
+  P8_43_REG     (MODE_GPIO|INPUTENABLE)
+  P8_44_REG     (MODE_GPIO|INPUTENABLE)
+  P8_45A_REG    (MODE_GPIO|INPUTENABLE)
+  P8_45B_REG    (MODE_OFF)
+  P8_46A_REG    (MODE_GPIO|INPUTENABLE)
+  P8_46B_REG    (MODE_OFF)
 
-  P9.11A_REG    (MODE_GPIO|INPUTENABLE)
-  P9.11B_REG    (MODE_OFF)
-  P9.12_REG     (MODE_GPIO|INPUTENABLE)
-  P9.13A_REG    (MODE_GPIO|INPUTENABLE)
-  P9.13B_REG    (MODE_OFF)
-  P9.14_REG     (MODE_GPIO|INPUTENABLE)
-  P9.15_REG     (MODE_GPIO|INPUTENABLE)
-  P9.16_REG     (MODE_GPIO|INPUTENABLE)
-  P9.17A_REG    (MODE_GPIO|INPUTENABLE)
-  P9.17B_REG    (MODE_OFF)
-  P9.18A_REG    (MODE_GPIO|INPUTENABLE)
-  P9.18B_REG    (MODE_OFF)
-  P9.19A_REG    (MODE_GPIO|INPUTENABLE)
-  P9.19B_REG    (MODE_OFF)
+  P9_11A_REG    (MODE_GPIO|INPUTENABLE)
+  P9_11B_REG    (MODE_OFF)
+  P9_12_REG     (MODE_GPIO|INPUTENABLE)
+  P9_13A_REG    (MODE_GPIO|INPUTENABLE)
+  P9_13B_REG    (MODE_OFF)
+  P9_14_REG     (MODE_GPIO|INPUTENABLE)
+  P9_15_REG     (MODE_GPIO|INPUTENABLE)
+  P9_16_REG     (MODE_GPIO|INPUTENABLE)
+  P9_17A_REG    (MODE_GPIO|INPUTENABLE)
+  P9_17B_REG    (MODE_OFF)
+  P9_18A_REG    (MODE_GPIO|INPUTENABLE)
+  P9_18B_REG    (MODE_OFF)
+  P9_19A_REG    (MODE_GPIO|INPUTENABLE)
+  P9_19B_REG    (MODE_OFF)
 
-  P9.20A_REG    (MODE_GPIO|INPUTENABLE)
-  P9.20B_REG    (MODE_OFF)
-  P9.21A_REG    (MODE_GPIO|INPUTENABLE)
-  P9.21B_REG    (MODE_OFF)
-  P9.22A_REG    (MODE_GPIO|INPUTENABLE)
-  P9.22B_REG    (MODE_OFF)
-  P9.23_REG     (MODE_GPIO|INPUTENABLE)
-  P9.24_REG     (MODE_GPIO|INPUTENABLE)
-  P9.25_REG     (MODE_GPIO|INPUTENABLE)
-  P9.26A_REG    (MODE_GPIO|INPUTENABLE)
-  P9.26B_REG    (MODE_OFF)
-  P9.27A_REG    (MODE_GPIO|INPUTENABLE)
-  P9.27B_REG    (MODE_OFF)
-  P9.28_REG     (MODE_GPIO|INPUTENABLE)
-  P9.29A_REG    (MODE_GPIO|INPUTENABLE)
-  P9.29B_REG    (MODE_OFF)
-  P9.30_REG     (MODE_GPIO|INPUTENABLE)
+  P9_20A_REG    (MODE_GPIO|INPUTENABLE)
+  P9_20B_REG    (MODE_OFF)
+  P9_21A_REG    (MODE_GPIO|INPUTENABLE)
+  P9_21B_REG    (MODE_OFF)
+  P9_22A_REG    (MODE_GPIO|INPUTENABLE)
+  P9_22B_REG    (MODE_OFF)
+  P9_23_REG     (MODE_GPIO|INPUTENABLE)
+  P9_24_REG     (MODE_GPIO|INPUTENABLE)
+  P9_25_REG     (MODE_GPIO|INPUTENABLE)
+  P9_26A_REG    (MODE_GPIO|INPUTENABLE)
+  P9_26B_REG    (MODE_OFF)
+  P9_27A_REG    (MODE_GPIO|INPUTENABLE)
+  P9_27B_REG    (MODE_OFF)
+  P9_28_REG     (MODE_GPIO|INPUTENABLE)
+  P9_29A_REG    (MODE_GPIO|INPUTENABLE)
+  P9_29B_REG    (MODE_OFF)
+  P9_30_REG     (MODE_GPIO|INPUTENABLE)
 
-  P9.31A_REG    (MODE_GPIO|INPUTENABLE)
-  P9.31B_REG    (MODE_OFF)
+  P9_31A_REG    (MODE_GPIO|INPUTENABLE)
+  P9_31B_REG    (MODE_OFF)
 
-  P9.41A_REG    (MODE_GPIO|INPUTENABLE)
-  P9.41B_REG    (MODE_OFF)
-  P9.42A_REG    (MODE_GPIO|INPUTENABLE)
-  P9.42B_REG    (MODE_OFF)
+  P9_41A_REG    (MODE_GPIO|INPUTENABLE)
+  P9_41B_REG    (MODE_OFF)
+  P9_42A_REG    (MODE_GPIO|INPUTENABLE)
+  P9_42B_REG    (MODE_OFF)
  >;
 };
