@@ -1,0 +1,387 @@
+&dra7_pmx_core {
+    //==============================================================================================
+    //pin groups that are accessible via the headers -----------------------------------------------
+    //==============================================================================================
+
+    // Default grp: set all unused to GPIO (in). If you want to use any pin in a different way, 
+    // comment it out here, put it in a different grp, and then connect the grp to a device in
+    // the tree
+
+    default_header_pins: default_header_pins {  
+        pinctrl-single,pins = < 
+            P8_03_REG (MODE_GPIO|INPUTENABLE)
+            P8_04_REG (MODE_GPIO|INPUTENABLE)
+            P8_05_REG (MODE_GPIO|INPUTENABLE)
+            P8_06_REG (MODE_GPIO|INPUTENABLE)
+            P8_07_REG (MODE_GPIO|INPUTENABLE)
+            P8_08_REG (MODE_GPIO|INPUTENABLE)
+            P8_09_REG (MODE_GPIO|INPUTENABLE)
+            P8_10_REG (MODE_GPIO|INPUTENABLE)
+
+            P8_11_REG (MODE_GPIO|INPUTENABLE)
+            P8_12_REG (MODE_GPIO|INPUTENABLE)
+            P8_13_REG (MODE_GPIO|INPUTENABLE)
+            P8_14_REG (MODE_GPIO|INPUTENABLE)
+            P8_15A_REG (MODE_GPIO|INPUTENABLE)
+            P8_15B_REG (MODE_OFF)
+            P8_16_REG (MODE_GPIO|INPUTENABLE)
+            P8_17_REG (MODE_GPIO|INPUTENABLE)
+            P8_18_REG (MODE_GPIO|INPUTENABLE)
+            P8_19_REG (MODE_GPIO|INPUTENABLE)
+
+            P8_20_REG (MODE_GPIO|INPUTENABLE)
+            P8_21_REG (MODE_GPIO|INPUTENABLE)
+            P8_22_REG (MODE_GPIO|INPUTENABLE)
+            P8_23_REG (MODE_GPIO|INPUTENABLE)
+            P8_24_REG (MODE_GPIO|INPUTENABLE)
+            P8_25_REG (MODE_GPIO|INPUTENABLE)
+            P8_26_REG (MODE_GPIO|INPUTENABLE)
+            P8_27A_REG (MODE_GPIO|INPUTENABLE)
+            P8_27B_REG (MODE_OFF)
+            P8_28A_REG (MODE_GPIO|INPUTENABLE)
+            P8_28B_REG (MODE_OFF)
+            P8_29A_REG (MODE_GPIO|INPUTENABLE)
+            P8_29B_REG (MODE_OFF)
+
+            P8_30A_REG (MODE_GPIO|INPUTENABLE)
+            P8_30B_REG (MODE_OFF)
+            P8_31A_REG (MODE_GPIO|INPUTENABLE)
+            P8_31B_REG (MODE_OFF)
+            P8_32A_REG (MODE_GPIO|INPUTENABLE)
+            P8_32B_REG (MODE_OFF)
+            P8_33A_REG (MODE_GPIO|INPUTENABLE)
+            P8_33B_REG (MODE_OFF)
+            P8_34A_REG (MODE_GPIO|INPUTENABLE)
+            P8_34B_REG (MODE_OFF)
+            P8_35A_REG (MODE_GPIO|INPUTENABLE)
+            P8_35B_REG (MODE_OFF)
+            P8_36A_REG (MODE_GPIO|INPUTENABLE)
+            P8_36B_REG (MODE_OFF)
+            P8_37A_REG (MODE_GPIO|INPUTENABLE)
+            P8_37B_REG (MODE_OFF)
+            P8_38A_REG (MODE_GPIO|INPUTENABLE)
+            P8_38B_REG (MODE_OFF)
+            P8_39_REG  (MODE_GPIO|INPUTENABLE)
+
+            P8_40_REG (MODE_GPIO|INPUTENABLE)
+            P8_41_REG (MODE_GPIO|INPUTENABLE)
+            P8_42_REG (MODE_GPIO|INPUTENABLE)
+            P8_43_REG (MODE_GPIO|INPUTENABLE)
+            P8_44_REG (MODE_GPIO|INPUTENABLE)
+            P8_45A_REG (MODE_GPIO|INPUTENABLE)
+            P8_45B_REG (MODE_OFF)
+            P8_46A_REG (MODE_GPIO|INPUTENABLE)
+            P8_46B_REG (MODE_OFF)
+
+            P9_11A_REG (MODE_GPIO|INPUTENABLE)
+            P9_11B_REG (MODE_OFF)
+            P9_12_REG (MODE_GPIO|INPUTENABLE)
+            P9_13A_REG (MODE_GPIO|INPUTENABLE)
+            P9_13B_REG (MODE_OFF)
+            P9_14_REG (MODE_GPIO|INPUTENABLE)
+            P9_15_REG (MODE_GPIO|INPUTENABLE)
+            P9_16_REG (MODE_GPIO|INPUTENABLE)
+            P9_17A_REG (MODE_GPIO|INPUTENABLE)
+            P9_17B_REG (MODE_OFF)
+            P9_18A_REG (MODE_GPIO|INPUTENABLE)
+            P9_18B_REG (MODE_OFF)
+            P9_19A_REG (MODE_GPIO|INPUTENABLE)
+            P9_19B_REG (MODE_OFF)
+
+            P9_20A_REG (MODE_GPIO|INPUTENABLE)
+            P9_20B_REG (MODE_OFF)
+            P9_21A_REG (MODE_GPIO|INPUTENABLE)
+            P9_21B_REG (MODE_OFF)
+            P9_22A_REG (MODE_GPIO|INPUTENABLE)
+            P9_22B_REG (MODE_OFF)
+            P9_23_REG (MODE_GPIO|INPUTENABLE)
+            P9_24_REG (MODE_GPIO|INPUTENABLE)
+            P9_25_REG (MODE_GPIO|INPUTENABLE)
+            P9_26A_REG (MODE_GPIO|INPUTENABLE)
+            P9_26B_REG (MODE_OFF)
+            P9_27A_REG (MODE_GPIO|INPUTENABLE)
+            P9_27B_REG (MODE_OFF)
+            P9_28_REG (MODE_GPIO|INPUTENABLE)
+            P9_29A_REG (MODE_GPIO|INPUTENABLE)
+            P9_29B_REG (MODE_OFF)
+            P9_30_REG (MODE_GPIO|INPUTENABLE)
+
+            P9_31A_REG (MODE_GPIO|INPUTENABLE)
+            P9_31B_REG (MODE_OFF)
+
+            P9_41A_REG (MODE_GPIO|INPUTENABLE)
+            P9_41B_REG (MODE_OFF)
+            P9_42A_REG (MODE_GPIO|INPUTENABLE)
+            P9_42B_REG (MODE_OFF)
+    >;
+    };
+
+    //==============================================================================================
+    //pin groups, that are reserved by some device in the tree but not accessible via the headers -- 
+    //==============================================================================================
+    
+    mmc1_pins_default: mmc1_pins_default {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x3754, PIN_INPUT_PULLUP | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3758, PIN_INPUT_PULLUP | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x375c, PIN_INPUT_PULLUP | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3760, PIN_INPUT_PULLUP | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3764, PIN_INPUT_PULLUP | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3768, PIN_INPUT_PULLUP | MUX_MODE0)
+        >;
+    };
+
+    mmc1_pins_hs: mmc1_pins_hs {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x3754, PIN_INPUT_PULLUP | MUX_VIRTUAL_MODE11 | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3758, PIN_INPUT_PULLUP | MUX_VIRTUAL_MODE11 | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x375c, PIN_INPUT_PULLUP | MUX_VIRTUAL_MODE11 | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3760, PIN_INPUT_PULLUP | MUX_VIRTUAL_MODE11 | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3764, PIN_INPUT_PULLUP | MUX_VIRTUAL_MODE11 | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3768, PIN_INPUT_PULLUP | MUX_VIRTUAL_MODE11 | MUX_MODE0)
+        >;
+    };
+
+    mmc1_pins_sdr50: mmc1_pins_sdr50 {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x3754, PIN_INPUT_PULLUP | MUX_VIRTUAL_MODE10 | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3758, PIN_INPUT_PULLUP | MUX_VIRTUAL_MODE10 | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x375c, PIN_INPUT_PULLUP | MUX_VIRTUAL_MODE10 | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3760, PIN_INPUT_PULLUP | MUX_VIRTUAL_MODE10 | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3764, PIN_INPUT_PULLUP | MUX_VIRTUAL_MODE10 | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3768, PIN_INPUT_PULLUP | MUX_VIRTUAL_MODE10 | MUX_MODE0)
+        >;
+    };
+
+    mmc1_pins_ddr50: mmc1_pins_ddr50 {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x3754, PIN_INPUT_PULLUP | MODE_SELECT | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3758, PIN_INPUT_PULLUP | MODE_SELECT | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x375c, PIN_INPUT_PULLUP | MODE_SELECT | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3760, PIN_INPUT_PULLUP | MODE_SELECT | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3764, PIN_INPUT_PULLUP | MODE_SELECT | MUX_MODE0)
+            DRA7XX_CORE_IOPAD(0x3768, PIN_INPUT_PULLUP | MODE_SELECT | MUX_MODE0)
+        >;
+    };
+
+    mmc2_pins_default: mmc2_pins_default {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x349c, PIN_INPUT_PULLUP | MUX_MODE1)
+            DRA7XX_CORE_IOPAD(0x34b0, PIN_INPUT_PULLUP | MUX_MODE1)
+            DRA7XX_CORE_IOPAD(0x34a0, PIN_INPUT_PULLUP | MUX_MODE1)
+            DRA7XX_CORE_IOPAD(0x34a4, PIN_INPUT_PULLUP | MUX_MODE1)
+            DRA7XX_CORE_IOPAD(0x34a8, PIN_INPUT_PULLUP | MUX_MODE1)
+            DRA7XX_CORE_IOPAD(0x34ac, PIN_INPUT_PULLUP | MUX_MODE1)
+            DRA7XX_CORE_IOPAD(0x348c, PIN_INPUT_PULLUP | MUX_MODE1)
+            DRA7XX_CORE_IOPAD(0x3490, PIN_INPUT_PULLUP | MUX_MODE1)
+            DRA7XX_CORE_IOPAD(0x3494, PIN_INPUT_PULLUP | MUX_MODE1)
+            DRA7XX_CORE_IOPAD(0x3498, PIN_INPUT_PULLUP | MUX_MODE1)
+        >;
+    };
+
+    extcon_usb1_pins_default: extcon_usb1_pins_default {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x3518, PIN_INPUT | MUX_MODE14) /* AG2: vin1a_d9.gpio3_13  - USR0 */
+        >;
+    };
+
+    led_pins_default: led_pins_default {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x3528, PIN_OUTPUT | MUX_MODE14) /* AF6: vin1a_d13.gpio3_17  - USR0 */
+            DRA7XX_CORE_IOPAD(0x36c0, PIN_OUTPUT | MUX_MODE14) /* J11: mcasp1_axr3.gpio5_5 - USR1 */
+            DRA7XX_CORE_IOPAD(0x3520, PIN_OUTPUT | MUX_MODE14) /* AG5: vin1a_d12.gpio3_15  - USR2 */
+            DRA7XX_CORE_IOPAD(0x351c, PIN_OUTPUT | MUX_MODE14) /* AG3: vin1a_d10.gpio3_14  - USR3 */
+            DRA7XX_CORE_IOPAD(0x3500, PIN_OUTPUT | MUX_MODE14) /* AH6: vin1a_d3.gpio3_7    - USR4 */
+        >;
+    };
+
+    microsd_extra_pins_default: microsd_extra_pins_default {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x376c, PIN_INPUT_PULLUP | MUX_MODE14) /* W7: mmc1_sdcd.gpio6_27 - MMC1_SDCD */
+        >;
+    };
+
+    ethphy_extra_pins_default: ethphy_extra_pins_default {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x34c4, PIN_OUTPUT_PULLUP | MUX_MODE14) /* N1: gpmc_advn_ale.gpio2_23 - RGMII_RST */
+            DRA7XX_CORE_IOPAD(0x364c, PIN_INPUT | MUX_MODE14) /* Y1: uart3_txd.gpio5_19 - MII0_INT */
+        >;
+    };
+
+    emmc_pwrseq_pins_default: emmc_pwrseq_pins_default {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x36c8, PIN_OUTPUT_PULLUP | MUX_MODE14) /* F13: mcasp1_axr5.gpio5_7 - eMMC_RSTn */
+        >;
+    };
+
+    brcmf_pwrseq_pins_default: brcmf_pwrseq_pins_default {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x352c, PIN_OUTPUT_PULLUP | MUX_MODE14) /* AF3: vin1a_d14.gpio3_18 - WL_REG_ON */
+            DRA7XX_CORE_IOPAD(0x353c, PIN_OUTPUT_PULLUP | MUX_MODE14) /* AE5: vin1a_d18.gpio3_22 - BT_REG_ON */
+        >;
+    };
+
+    wifibt_extra_pins_default: wifibt_extra_pins_default {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x3540, PIN_INPUT | MUX_MODE14) /* AE1: vin1a_d19.gpio3_23 - WL_HOST_WAKE */
+            DRA7XX_CORE_IOPAD(0x3450, PIN_INPUT | MUX_MODE8) /* P6: vin1a_d20.uart6_rxd - UART6_RXD */
+            DRA7XX_CORE_IOPAD(0x3454, PIN_INPUT | MUX_MODE8) /* R9: vin1a_d21.uart6_txd - UART6_TXD */
+            DRA7XX_CORE_IOPAD(0x3458, PIN_INPUT | MUX_MODE8) /* R5: vin1a_d22.uart6_ctsn - UART6_CTSN */
+            DRA7XX_CORE_IOPAD(0x345c, PIN_INPUT | MUX_MODE8) /* P5: vin1a_d23.uart6_rtsn - UART6_RTSN */
+            DRA7XX_CORE_IOPAD(0x3534, PIN_INPUT_PULLDOWN | MUX_MODE14) /* AF1: vin1a_d16.gpio3_20 - BT_HOST_WAKE */
+            DRA7XX_CORE_IOPAD(0x3538, PIN_OUTPUT_PULLDOWN | MUX_MODE14) /* AE3: vin1a_d6.gpio3_21 - BT_WAKE */
+        >;
+    };
+
+    adc_pins_default: adc_pins_default {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x3550, PIN_OUTPUT | MUX_MODE14) /* AD3: vin1a_d23.gpio3_27 - VDD_ADC_SEL */
+            DRA7XX_CORE_IOPAD(0x34DC, PIN_INPUT_PULLUP | MUX_MODE14) /* AG8: vin1a_clk0.gpio2_30 - INT_ADC */
+        >;
+    };
+
+    pmic_pins_default: pmic_pins_default {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x3690, PIN_INPUT_PULLUP | MUX_MODE14) /* F21: gpio6_16.gpio6_16 - PMIC_INT */
+        >;
+    };
+
+    hdmi_pins_default: hdmi_pins_default {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x3808, PIN_INPUT | MUX_MODE1) /* C25: i2c2_sda.hdmi1_ddc_scl - HDMI_DDC_SCL */
+            DRA7XX_CORE_IOPAD(0x380C, PIN_INPUT | MUX_MODE1) /* F17: i2c2_scl.hdmi1_ddc_sda - HDMI_DDC_SDA */
+            DRA7XX_CORE_IOPAD(0x37BC, PIN_INPUT | MUX_MODE6) /* B20: spi1_cs3.hdmi1_cec - HDMI_DDC_CEC */
+            DRA7XX_CORE_IOPAD(0x37B8, PIN_INPUT | MUX_MODE14) /* B21: spi1_cs2.gpio7_12 - HDMI_DDC_HPD */
+        >;
+    };
+
+    unused_pins_default: unused_pins_default {
+        pinctrl-single,pins = <
+            DRA7XX_CORE_IOPAD(0x3400, MUX_MODE15) /* M6: sysboot0 */
+            DRA7XX_CORE_IOPAD(0x3404, MUX_MODE15) /* M2: sysboot1 */
+            DRA7XX_CORE_IOPAD(0x3408, MUX_MODE15) /* L5: sysboot2 */
+            DRA7XX_CORE_IOPAD(0x340C, MUX_MODE15) /* M1: sysboot3 */
+            DRA7XX_CORE_IOPAD(0x3410, MUX_MODE15) /* L6: sysboot4 */
+            DRA7XX_CORE_IOPAD(0x3414, MUX_MODE15) /* L4: sysboot5 */
+            DRA7XX_CORE_IOPAD(0x3418, MUX_MODE15) /* L3: sysboot6 */
+            DRA7XX_CORE_IOPAD(0x341C, MUX_MODE15) /* L2: sysboot7 */
+            DRA7XX_CORE_IOPAD(0x3420, MUX_MODE15) /* L1: sysboot8 */
+            DRA7XX_CORE_IOPAD(0x3424, MUX_MODE15) /* K2: sysboot9 */
+            DRA7XX_CORE_IOPAD(0x3428, MUX_MODE15) /* J1: sysboot10 */
+            DRA7XX_CORE_IOPAD(0x342C, MUX_MODE15) /* J2: sysboot11 */
+            DRA7XX_CORE_IOPAD(0x3430, MUX_MODE15) /* H1: sysboot12 */
+            DRA7XX_CORE_IOPAD(0x3434, MUX_MODE15) /* J3: sysboot13 */
+            DRA7XX_CORE_IOPAD(0x3438, MUX_MODE15) /* H2: sysboot14 */
+            DRA7XX_CORE_IOPAD(0x343C, MUX_MODE15) /* H3: sysboot15 */
+
+            DRA7XX_CORE_IOPAD(0x3448, MUX_MODE15) /* T6: N/C */
+            DRA7XX_CORE_IOPAD(0x344C, MUX_MODE15) /* T7: N/C */
+
+            DRA7XX_CORE_IOPAD(0x3460, MUX_MODE15) /* N7: N/C */
+            DRA7XX_CORE_IOPAD(0x3464, MUX_MODE15) /* R4: N/C */
+            DRA7XX_CORE_IOPAD(0x3468, MUX_MODE15) /* N9: N/C */
+            DRA7XX_CORE_IOPAD(0x346C, MUX_MODE15) /* P9: N/C */
+            DRA7XX_CORE_IOPAD(0x3470, MUX_MODE15) /* P4: N/C */
+            DRA7XX_CORE_IOPAD(0x3474, MUX_MODE15) /* R3: N/C */
+            DRA7XX_CORE_IOPAD(0x3478, MUX_MODE15) /* T2: N/C */
+            DRA7XX_CORE_IOPAD(0x347C, MUX_MODE15) /* U2: N/C */
+            DRA7XX_CORE_IOPAD(0x3480, MUX_MODE15) /* U1: N/C */
+            DRA7XX_CORE_IOPAD(0x3484, MUX_MODE15) /* P3: N/C */
+            DRA7XX_CORE_IOPAD(0x3488, MUX_MODE15) /* R2: N/C */
+
+            DRA7XX_CORE_IOPAD(0x34B4, MUX_MODE15) /* T1: N/C */
+            DRA7XX_CORE_IOPAD(0x34B8, MUX_MODE15) /* P2: N/C */
+            DRA7XX_CORE_IOPAD(0x34BC, MUX_MODE15) /* P1: N/C */
+            DRA7XX_CORE_IOPAD(0x34C0, MUX_MODE15) /* P7: N/C */
+            DRA7XX_CORE_IOPAD(0x34C4, MUX_MODE15) /* N1: N/C */
+            DRA7XX_CORE_IOPAD(0x34C8, MUX_MODE15) /* M5: N/C */
+            DRA7XX_CORE_IOPAD(0x34CC, MUX_MODE15) /* M3: N/C */
+            DRA7XX_CORE_IOPAD(0x34D0, MUX_MODE15) /* N6: N/C */
+            DRA7XX_CORE_IOPAD(0x34D4, MUX_MODE15) /* M4: N/C */
+            DRA7XX_CORE_IOPAD(0x34D8, MUX_MODE15) /* N2: N/C */
+
+            DRA7XX_CORE_IOPAD(0x34E0, MUX_MODE15) /* AH7: N/C */
+
+            DRA7XX_CORE_IOPAD(0x34EC, MUX_MODE15) /* AE9: N/C */
+
+            DRA7XX_CORE_IOPAD(0x34F4, MUX_MODE15) /* AE8: N/C */
+            DRA7XX_CORE_IOPAD(0x34F8, MUX_MODE15) /* AD8: N/C */
+            DRA7XX_CORE_IOPAD(0x34FC, MUX_MODE15) /* AG7: N/C */
+
+            DRA7XX_CORE_IOPAD(0x3504, MUX_MODE15) /* AH3: N/C */
+            DRA7XX_CORE_IOPAD(0x3508, MUX_MODE15) /* AH5: N/C */
+
+            DRA7XX_CORE_IOPAD(0x3524, MUX_MODE15) /* AF2: N/C */
+
+            DRA7XX_CORE_IOPAD(0x3530, MUX_MODE15) /* AF4: N/C */
+
+            DRA7XX_CORE_IOPAD(0x354C, MUX_MODE15) /* AD2: N/C */
+
+            DRA7XX_CORE_IOPAD(0x3554, MUX_MODE15) /* E1: N/C */
+            DRA7XX_CORE_IOPAD(0x3558, MUX_MODE15) /* G2: N/C */
+            DRA7XX_CORE_IOPAD(0x355C, MUX_MODE15) /* H7: N/C */
+            DRA7XX_CORE_IOPAD(0x3560, MUX_MODE15) /* G1: N/C */
+
+            DRA7XX_CORE_IOPAD(0x356C, MUX_MODE15) /* F3: N/C */
+
+            DRA7XX_CORE_IOPAD(0x3574, MUX_MODE15) /* E2: N/C */
+
+            DRA7XX_CORE_IOPAD(0x3584, MUX_MODE15) /* E4: N/C */
+
+            DRA7XX_CORE_IOPAD(0x3594, MUX_MODE15) /* F6: N/C */
+
+            DRA7XX_CORE_IOPAD(0x35A4, MUX_MODE15) /* C4: N/C */
+            DRA7XX_CORE_IOPAD(0x35A8, MUX_MODE15) /* B2: N/C */
+
+            DRA7XX_CORE_IOPAD(0x35C0, MUX_MODE15) /* B5: N/C */
+            DRA7XX_CORE_IOPAD(0x35C4, MUX_MODE15) /* A4: N/C */
+
+            DRA7XX_CORE_IOPAD(0x35D0, MUX_MODE15) /* B11: N/C */
+
+            DRA7XX_CORE_IOPAD(0x3644, MUX_MODE15) /* U3: N/C */
+
+            DRA7XX_CORE_IOPAD(0x3680, MUX_MODE15) /* AB10: N/C */
+
+            DRA7XX_CORE_IOPAD(0x36BC, MUX_MODE15) /* G13: N/C */
+
+            DRA7XX_CORE_IOPAD(0x36C4, MUX_MODE15) /* E12: N/C */
+
+            DRA7XX_CORE_IOPAD(0x36CC, MUX_MODE15) /* C12: N/C */
+            DRA7XX_CORE_IOPAD(0x36D0, MUX_MODE15) /* D12: N/C */
+
+            DRA7XX_CORE_IOPAD(0x36FC, MUX_MODE15) /* E15: N/C */
+            DRA7XX_CORE_IOPAD(0x3700, MUX_MODE15) /* A20: N/C */
+
+            DRA7XX_CORE_IOPAD(0x370C, MUX_MODE15) /* C15: N/C */
+            DRA7XX_CORE_IOPAD(0x3710, MUX_MODE15) /* A16: N/C */
+            DRA7XX_CORE_IOPAD(0x3714, MUX_MODE15) /* D15: N/C */
+            DRA7XX_CORE_IOPAD(0x3718, MUX_MODE15) /* B16: N/C */
+            DRA7XX_CORE_IOPAD(0x371C, MUX_MODE15) /* B17: N/C */
+            DRA7XX_CORE_IOPAD(0x3720, MUX_MODE15) /* A17: N/C */
+            DRA7XX_CORE_IOPAD(0x3724, MUX_MODE15) /* B18: N/C */
+            DRA7XX_CORE_IOPAD(0x3728, MUX_MODE15) /* F15: N/C */
+
+            DRA7XX_CORE_IOPAD(0x3744, MUX_MODE15) /* AA3: N/C */
+            DRA7XX_CORE_IOPAD(0x3748, MUX_MODE15) /* AB9: N/C */
+            DRA7XX_CORE_IOPAD(0x374C, MUX_MODE15) /* AB3: N/C */
+            DRA7XX_CORE_IOPAD(0x3750, MUX_MODE15) /* AA4: N/C */
+
+            DRA7XX_CORE_IOPAD(0x3770, MUX_MODE15) /* Y9: N/C */
+            DRA7XX_CORE_IOPAD(0x3774, MUX_MODE15) /* AC5: N/C */
+            DRA7XX_CORE_IOPAD(0x3778, MUX_MODE15) /* AB4: N/C */
+
+            DRA7XX_CORE_IOPAD(0x37A4, MUX_MODE15) /* A25: N/C */
+            DRA7XX_CORE_IOPAD(0x37A8, MUX_MODE15) /* F16: N/C */
+            DRA7XX_CORE_IOPAD(0x37AC, MUX_MODE15) /* B25: N/C */
+            DRA7XX_CORE_IOPAD(0x37B0, MUX_MODE15) /* A24: N/C */
+
+            DRA7XX_CORE_IOPAD(0x37D0, MUX_MODE15) /* G20: N/C */
+            DRA7XX_CORE_IOPAD(0x37D4, MUX_MODE15) /* G19: N/C */
+
+            DRA7XX_CORE_IOPAD(0x3818, MUX_MODE15) /* AD17: N/C */
+            DRA7XX_CORE_IOPAD(0x381C, MUX_MODE15) /* AC17: N/C */
+            DRA7XX_CORE_IOPAD(0x3820, MUX_MODE15) /* AB16: N/C */
+            DRA7XX_CORE_IOPAD(0x3824, MUX_MODE15) /* AC16: N/C */
+        >;
+    };
+};

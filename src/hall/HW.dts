@@ -7,69 +7,64 @@
  * for details and mode/offset definitions.
  *
  */
+
 /dts-v1/;
 
-#include "defines.dtsi"
-#include "iodelays.dtsi"
-#include "pinmuxer.dtsi"
+#include "HW.defines.dtsi"
+#include "dra74x.dtsi"
+#include "am57xx-commercial-grade.dtsi"
+#include "dra74x-mmc-iodelay.dtsi"
+#include "dra74-ipu-dsp-common.dtsi"
 
+// Device tree -------------------------------------------------------------------------------------
 / {
     model = "BeagleBoard.org BeagleBone AI";
-    compatible = "beagleboard.org,am57xx-beagleboneai", "ti,am5728", "ti,dra742", "ti,dra74", "ti,dra7";
+    compatible = "beagle,am5729-beagleboneai", "ti,am5728","ti,dra742", "ti,dra74", "ti,dra7";
+    chosen {base_dtb = "HW.dts"; base_dtb_version = "001"; stdout-path = &uart1;};
+    aliases {rtc0 = &tps659038_rtc; rtc1 = &rtc; display0 = &hdmi_conn;};
 
-    chosen {base_dtb = "HW.dts"; base_dtb_version = "000"; stdout-path = &uart1;};
-
+    // default stuff -------------------------------------------------------------------------------
     memory@0 {device_type = "memory";reg = <0x0 0x80000000 0x0 0x40000000>;};
-    cpus {cpu@1 {device_type = "cpu";compatible = "arm,cortex-a15";reg = <1>;operating-points-v2 = <&cpu0_opp_table>;clocks = <&dpll_mpu_ck>;clock-names = "cpu";clock-latency = <300000>;#cooling-cells = <2>;vbb-supply = <&abb_mpu>;};};
-    pmu {compatible = "arm,cortex-a15-pmu";interrupt-parent = <&wakeupgen>;interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,<GIC_SPI 132 IRQ_TYPE_LEVEL_HIGH>;};
+    reserved-memory {
+        #address-cells = <2>;#size-cells = <2>;ranges;
+        cmem_block_mem_1_ocmc3: cmem_block_mem@40500000 {reg = <0x0 0x40500000 0x0 0x100000>;no-map;status = "okay";};
+        ipu2_memory_region: ipu2-memory@95800000 {compatible = "shared-dma-pool";reg = <0x0 0x95800000 0x0 0x3800000>;reusable;status = "okay";};
+        dsp1_memory_region: dsp1-memory@99000000 {compatible = "shared-dma-pool";reg = <0x0 0x99000000 0x0 0x4000000>;reusable;status = "okay";};
+        ipu1_memory_region: ipu1-memory@9d000000 {compatible = "shared-dma-pool";reg = <0x0 0x9d000000 0x0 0x2000000>;reusable;status = "okay";};
+        dsp2_memory_region: dsp2-memory@9f000000 {compatible = "shared-dma-pool";reg = <0x0 0x9f000000 0x0 0x800000>;reusable;status = "okay";};
+        cmem_block_mem_0: cmem_block_mem@a0000000 {reg = <0x0 0xa0000000 0x0 0x18000000>;no-map;status = "okay";};
+    };
+    cmem {
+        compatible = "ti,cmem";#address-cells = <1>;#size-cells = <0>;#pool-size-cells = <2>;status = "okay";
+        cmem_block_0: cmem_block@0 {reg = <0>;memory-region = <&cmem_block_mem_0>;cmem-buf-pools = <1 0x0 0x18000000>;};
+        cmem_block_1: cmem_block@1 {reg = <1>;memory-region = <&cmem_block_mem_1_ocmc3>;};
+    };
 
-
-    vdd_5v: fixedregulator-vdd_5v {compatible = "regulator-fixed";regulator-name = "vdd_5v";regulator-min-microvolt = <5000000>; regulator-max-microvolt = <5000000>;regulator-always-on;regulator-boot-on;};
-    vtt_fixed: fixedregulator-vtt {compatible = "regulator-fixed";regulator-name = "vtt_fixed";vin-supply = <&vdd_3v3>;regulator-min-microvolt = <3300000>;regulator-max-microvolt = <3300000>;regulator-always-on;regulator-boot-on;};
-
-    src_clk_x1: src_clk_x1 {#clock-cells = <0>;compatible = "fixed-clock";clock-frequency = <20000000>;};
-    src_clk_osc1: src_clk_osc1 {#clock-cells = <0>;compatible = "fixed-clock";clock-frequency = <24000000>;};
-    src_clk_osc4: src_clk_osc4 {#clock-cells = <0>;compatible = "fixed-clock";clock-frequency = <24000000>;};
+    vdd_adc: gpioregulator-vdd_adc {compatible = "regulator-gpio";regulator-name = "vdd_adc";vin-supply = <&vdd_5v>;regulator-min-microvolt = <1800000>;regulator-max-microvolt = <3300000>;regulator-always-on;regulator-boot-on;gpios = <&gpio3 27 GPIO_ACTIVE_HIGH>;states = <1800000 03300000 1>;};
+    vdd_5v: fixedregulator-vdd_5v {compatible = "regulator-fixed";regulator-name = "vdd_5v";regulator-min-microvolt = <5000000>;regulator-max-microvolt = <5000000>;regulator-always-on;regulator-boot-on;};
+    vtt_fixed: fixedregulator-vtt {compatible = "regulator-fixed";regulator-name = "vtt_fixed";vin-supply = <&vdd_ddr>;regulator-min-microvolt = <3300000>;regulator-max-microvolt = <3300000>;regulator-always-on;regulator-boot-on;};
 
     leds {
-        compatible = "gpio-leds";
-        led0 {label = "beaglebone:green:usr0";gpios = <&gpio3 14 GPIO_ACTIVE_HIGH>;linux,default-trigger = "heartbeat";default-state = "off";};
-        led1 {label = "beaglebone:green:usr1";gpios = <&gpio3 15 GPIO_ACTIVE_HIGH>;linux,default-trigger = "mmc0";default-state = "off";};
-        led2 {label = "beaglebone:green:usr2";gpios = <&gpio5 5 GPIO_ACTIVE_HIGH>;linux,default-trigger = "cpu";default-state = "off";};
-        led3 {label = "beaglebone:green:usr3";gpios = <&gpio3 17 GPIO_ACTIVE_HIGH>;linux,default-trigger = "mmc1";default-state = "off";};
-        };
+        compatible = "gpio-leds";pinctrl-names = "default";pinctrl-0 = <&led_pins_default>;
+        led0 {label = "beaglebone:green:usr0";gpios = <&gpio3 17 GPIO_ACTIVE_HIGH>;linux,default-trigger = "heartbeat";default-state = "off";};
+        led1 {label = "beaglebone:green:usr1";gpios = <&gpio5 5 GPIO_ACTIVE_HIGH>;linux,default-trigger = "mmc0";default-state = "off";};
+        led2 {label = "beaglebone:green:usr2";gpios = <&gpio3 15 GPIO_ACTIVE_HIGH>;linux,default-trigger = "cpu";default-state = "off";};
+        led3 {label = "beaglebone:green:usr3";gpios = <&gpio3 14 GPIO_ACTIVE_HIGH>;linux,default-trigger = "mmc1";default-state = "off";};
+        led4 {label = "beaglebone:green:usr4";gpios = <&gpio3 7 GPIO_ACTIVE_HIGH>;linux,default-trigger = "netdev";default-state = "off";};};
 
-    &davinci_mdio {reset-gpios = <&gpio2 23 GPIO_ACTIVE_LOW>;reset-delay-us = <2>;phy0: ethernet-phy@1 {reg = <4>;};};
-    &mac {slaves = <1>;status = "okay";};
-    &cpsw_emac0 {phy-handle = <&phy0>;phy-mode = "rgmii";};
+    hdmi_conn: connector@0 {compatible = "hdmi-connector";label = "hdmi";type = "a";port {hdmi_connector_in: endpoint {remote-endpoint = <&hdmi_encoder_out>;};};};
+    hdmi_enc: encoder@0 {compatible = "ti,tpd12s015";gpios = <0>,<0>,<&gpio7 12 GPIO_ACTIVE_HIGH>;ports {#address-cells = <0x1>;#size-cells = <0x0>;port@0 {reg = <0x0>;hdmi_encoder_in: endpoint@0 {remote-endpoint = <&hdmi_out>;};};port@1 {reg = <0x1>;hdmi_encoder_out: endpoint@0 {remote-endpoint = <&hdmi_connector_in>;};};};};
 
-    &mmc1 {status = "okay";vmmc-supply = <&vdd_3v3>;vmmc_aux-supply = <&vdd_sd>;vqmmc-supply = <&vdd_sd>;bus-width = <4>;max-frequency = <24000000>;cd-gpios = <&gpio6 27 GPIO_ACTIVE_LOW>;pinctrl-names = "default", "hs", "sdr12", "sdr25", "sdr50", "ddr50", "sdr104";pinctrl-0 = <&mmc1_pins_default>;pinctrl-1 = <&mmc1_pins_hs>;pinctrl-2 = <&mmc1_pins_default>;pinctrl-3 = <&mmc1_pins_hs>;pinctrl-4 = <&mmc1_pins_sdr50>;pinctrl-5 = <&mmc1_pins_ddr50 &mmc1_iodelay_ddr_rev20_conf>;pinctrl-6 = <&mmc1_pins_ddr50 &mmc1_iodelay_sdr104_rev20_conf>;};
-    &mmc2 {status = "okay";vmmc-supply = <&vdd_3v3>;bus-width = <8>;ti,non-removable;non-removable;max-frequency = <96000000>;no-1-8-v;/delete-property/ mmc-hs200-1_8v;pinctrl-names = "default", "hs";pinctrl-0 = <&mmc2_pins_default>;pinctrl-1 = <&mmc2_pins_default>;};
+    emmc_pwrseq: emmc_pwrseq {compatible = "mmc-pwrseq-emmc";reset-gpios = <&gpio5 7 GPIO_ACTIVE_LOW>;pinctrl-names = "default";pinctrl-0 = <&emmc_pwrseq_pins_default>;};
+    brcmf_pwrseq: brcmf_pwrseq {compatible = "mmc-pwrseq-simple";pinctrl-names = "default";pinctrl-0 = <&brcmf_pwrseq_pins_default>;reset-gpios = <&gpio3 22 GPIO_ACTIVE_LOW>,	/* BT-REG-ON */<&gpio3 18 GPIO_ACTIVE_LOW>;	/* WL-REG-ON */};
 
-    &usb2_phy1 {phy-supply = <&ldousb_reg>;};
-    &usb2_phy2 {phy-supply = <&ldousb_reg>;};
-    &usb1 {dr_mode = "host";};
-    &omap_dwc3_2 {extcon = <&extcon_usb2>;};
-    &usb2 {dr_mode = "peripheral";};
+    unused_pins: unused_pins {compatible = "gpio-leds";pinctrl-names = "default";pinctrl-0 = <&unused_pins_default>;};
+    extcon_usb1: extcon_usb1 {compatible = "linux,extcon-usb-gpio";ti,enable-id-detection;id-gpio = <&gpio3 13 GPIO_ACTIVE_HIGH>;pinctrl-names = "default";pinctrl-0 = <&extcon_usb1_pins_default>;};
 
-    &cpu_trips {cpu_alert1: cpu_alert1 {temperature = <50000>;/hysteresis = <2000>;type = "active";};};
-    &cpu_cooling_maps {map1 {trip = <&cpu_alert1>;};};
-    &thermal_zones {board_thermal: board_thermal {polling-delay-passive = <1250>;polling-delay = <1500>;board_trips: trips {board_alert0: board_alert {temperature = <40000>;hysteresis = <2000>;type = "active";};board_crit: board_crit {temperature = <105000>;hysteresis = <0>;type = "critical";};};board_cooling_maps: cooling-maps {map0 {trip = <&board_alert0>;};};};};
-    &cpu_alert0 {temperature = <80000>;};
-    &cpu_crit {temperature = <90000>;};
-    &gpu_crit {temperature = <90000>;};
-    &core_crit {temperature = <90000>;};
-    &dspeve_crit {temperature = <90000>;};
-    &iva_crit {temperature = <90000>;};
-    &cpu0_opp_table {opp-shared;};
-
-    &mailbox5 {status = "okay";mbox_ipu1_ipc3x: mbox_ipu1_ipc3x {status = "okay";};mbox_dsp1_ipc3x: mbox_dsp1_ipc3x {status = "okay";};};
-    &mailbox6 {status = "okay";mbox_ipu2_ipc3x: mbox_ipu2_ipc3x {status = "okay";};mbox_dsp2_ipc3x: mbox_dsp2_ipc3x {status = "okay";};};
-
-    ocp {
-        dsp2_system: dsp_system@41500000 {compatible = "syscon";reg = <0x41500000 0x100>;};
-        omap_dwc3_4: omap_dwc3_4@48940000 {compatible = "ti,dwc3";ti,hwmods = "usb_otg_ss4";reg = <0x48940000 0x10000>;interrupts = <GIC_SPI 346 IRQ_TYPE_LEVEL_HIGH>;#address-cells = <1>;#size-cells = <1>;utmi-mode = <2>;ranges;status = "disabled";usb4: usb@48950000 {compatible = "snps,dwc3";reg = <0x48950000 0x17000>;interrupts = <GIC_SPI 345 IRQ_TYPE_LEVEL_HIGH>,<GIC_SPI 345 IRQ_TYPE_LEVEL_HIGH>,<GIC_SPI 346 IRQ_TYPE_LEVEL_HIGH>;interrupt-names = "peripheral","host","otg";maximum-speed = "high-speed";dr_mode = "otg";};};
-        target-module@41501000 {compatible = "ti,sysc-omap2", "ti,sysc";reg = <0x41501000 0x4>,<0x41501010 0x4>,<0x41501014 0x4>;reg-names = "rev", "sysc", "syss";ti,sysc-sidle = <SYSC_IDLE_FORCE>,<SYSC_IDLE_NO>,<SYSC_IDLE_SMART>;ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |SYSC_OMAP2_SOFTRESET |SYSC_OMAP2_AUTOIDLE)>;clocks = <&dsp2_clkctrl DRA7_DSP2_MMU0_DSP2_CLKCTRL 0>;clock-names = "fck";resets = <&prm_dsp2 1>;reset-names = "rstctrl";ranges = <0x0 0x41501000 0x1000>;#size-cells = <1>;#address-cells = <1>;mmu0_dsp2: mmu@0 {compatible = "ti,dra7-dsp-iommu";reg = <0x0 0x100>;interrupts = <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>;#iommu-cells = <0>;ti,syscon-mmuconfig = <&dsp2_system 0x0>;};};
-        target-module@41502000 {compatible = "ti,sysc-omap2", "ti,sysc";reg = <0x41502000 0x4>,<0x41502010 0x4>,<0x41502014 0x4>;reg-names = "rev", "sysc", "syss";ti,sysc-sidle = <SYSC_IDLE_FORCE>,<SYSC_IDLE_NO>,<SYSC_IDLE_SMART>;ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |SYSC_OMAP2_SOFTRESET |SYSC_OMAP2_AUTOIDLE)>;clocks = <&dsp2_clkctrl DRA7_DSP2_MMU0_DSP2_CLKCTRL 0>;clock-names = "fck";resets = <&prm_dsp2 1>;reset-names = "rstctrl";ranges = <0x0 0x41502000 0x1000>;#size-cells = <1>;#address-cells = <1>;mmu1_dsp2: mmu@0 {compatible = "ti,dra7-dsp-iommu";reg = <0x0 0x100>;interrupts = <GIC_SPI 147 IRQ_TYPE_LEVEL_HIGH>;#iommu-cells = <0>;ti,syscon-mmuconfig = <&dsp2_system 0x1>;};};
-    };
+    //custom stuff ---------------------------------------------------------------------------------
+    default_pins: default_pins {compatible = "gpio-leds";pinctrl-names = "default";pinctrl-0 = <&default_header_pins>;};
 };
+
+#include "HW.pinmuxer.dtsi"
+#include "HW.ocp.dtsi"
+#include "HW.misc.dtsi"
