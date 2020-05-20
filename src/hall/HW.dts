@@ -7,274 +7,69 @@
  * for details and mode/offset definitions.
  *
  */
+/dts-v1/;
 
-// Pin <-> offset definitions ----------------------------------------------------------------------
+#include "defines.dtsi"
+#include "iodelays.dtsi"
+#include "pinmuxer.dtsi"
 
-#define P8_01_REG NONE      //  GND
-#define P8_02_REG NONE      //  GND
-#define P8_03_REG 0x179C    //  gpio1_24
-#define P8_04_REG 0x17A0    //  gpio1_25
-#define P8_05_REG 0x178C    //  gpio7_1
-#define P8_06_REG 0x1790    //  gpio7_2
-#define P8_07_REG 0x16EC    //  gpio6_5
-#define P8_08_REG 0x16F0    //  gpio6_6
-#define P8_09_REG 0x1698    //  gpio6_18
+/ {
+    model = "BeagleBoard.org BeagleBone AI";
+    compatible = "beagleboard.org,am57xx-beagleboneai", "ti,am5728", "ti,dra742", "ti,dra74", "ti,dra7";
 
-#define P8_10_REG 0x16E8    //  gpio6_4
-#define P8_11_REG 0x1510    //  gpio3_11
-#define P8_12_REG 0x150C    //  gpio3_10
-#define P8_13_REG 0x1590    //  gpio4_11
-#define P8_14_REG 0x1598    //  gpio4_13
-#define P8_15A_REG 0x1570   //  gpio4_3
-#define P8_15B_REG 0x15B4   //  gpio4_27
-#define P8_16_REG 0x15BC    //  gpio4_29
-#define P8_17_REG 0x1624    //  gpio8_18
-#define P8_18_REG 0x1588    //  gpio4_9
-#define P8_19_REG 0x158C    //  gpio4_10
+    chosen {base_dtb = "HW.dts"; base_dtb_version = "000"; stdout-path = &uart1;};
 
-#define P8_20_REG 0x1780    //  gpio6_30
-#define P8_21_REG 0x177C    //  gpio6_29
-#define P8_22_REG 0x1798    //  gpio1_23
-#define P8_23_REG 0x1794    //  gpio1_22
-#define P8_24_REG 0x1788    //  gpio7_0
-#define P8_25_REG 0x1784    //  gpio6_31
-#define P8_26_REG 0x15B8    //  gpio4_28
-#define P8_27A_REG 0x15D8   //  gpio4_23
-#define P8_27B_REG 0x1628   //  gpio8_19
-#define P8_28A_REG 0x15C8   //  gpio4_19
-#define P8_28B_REG 0x162C   //  gpio8_20
-#define P8_29A_REG 0x15D4   //  gpio4_22
-#define P8_29B_REG 0x1630   //  gpio8_21
+    memory@0 {device_type = "memory";reg = <0x0 0x80000000 0x0 0x40000000>;};
+    cpus {cpu@1 {device_type = "cpu";compatible = "arm,cortex-a15";reg = <1>;operating-points-v2 = <&cpu0_opp_table>;clocks = <&dpll_mpu_ck>;clock-names = "cpu";clock-latency = <300000>;#cooling-cells = <2>;vbb-supply = <&abb_mpu>;};};
+    pmu {compatible = "arm,cortex-a15-pmu";interrupt-parent = <&wakeupgen>;interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,<GIC_SPI 132 IRQ_TYPE_LEVEL_HIGH>;};
 
-#define P8_30A_REG 0x15CC   //  gpio4_20
-#define P8_30B_REG 0x1634   //  gpio8_22
-#define P8_31A_REG 0x1614   //  gpio8_14
-#define P8_31B_REG 0x173C   //  pr2_pru1_gpi0
-#define P8_32A_REG 0x1618   //  gpio8_15
-#define P8_32B_REG 0x1740   //  pr2_pru1_gpo0
-#define P8_33A_REG 0x1610   //  gpio8_13
-#define P8_33B_REG 0x14E8   //  gpio3_1
-#define P8_34A_REG 0x1608   //  gpio8_11
-#define P8_34B_REG 0x1564   //  gpio4_0
-#define P8_35A_REG 0x160C   //  gpio8_12
-#define P8_35B_REG 0x14E4   //  gpio3_0
-#define P8_36A_REG 0x1604   //  gpio8_10
-#define P8_36B_REG 0x1568   //  gpio4_1
-#define P8_37A_REG 0x15FC   //  gpio8_8
-#define P8_37B_REG 0x1738   //  vin4a_d17
-#define P8_38A_REG 0x1600   //  gpio8_9
-#define P8_38B_REG 0x1734   //  vin4a_d16
-#define P8_39_REG 0x15F4    //  gpio8_6
 
-#define P8_40_REG 0x15F8    //  gpio8_7
-#define P8_41_REG 0x15EC    //  gpio8_4
-#define P8_42_REG 0x15F0    //  gpio8_5
-#define P8_43_REG 0x15E4    //  gpio8_2
-#define P8_44_REG 0x15E8    //  gpio8_3
-#define P8_45A_REG 0x15DC   //  gpio8_0
-#define P8_45B_REG 0x161C   //  gpio8_16
-#define P8_46A_REG 0x15E0   //  gpio8_1
-#define P8_46B_REG 0x1638   //  gpio8_23
+    vdd_5v: fixedregulator-vdd_5v {compatible = "regulator-fixed";regulator-name = "vdd_5v";regulator-min-microvolt = <5000000>; regulator-max-microvolt = <5000000>;regulator-always-on;regulator-boot-on;};
+    vtt_fixed: fixedregulator-vtt {compatible = "regulator-fixed";regulator-name = "vtt_fixed";vin-supply = <&vdd_3v3>;regulator-min-microvolt = <3300000>;regulator-max-microvolt = <3300000>;regulator-always-on;regulator-boot-on;};
 
-#define P9_01_REG NONE      //  GND
-#define P9_02_REG NONE      //  GND
-#define P9_03_REG NONE      //  3v3
-#define P9_04_REG NONE      //  3v3
-#define P9_05_REG NONE      //  5v
-#define P9_06_REG NONE      //  5v
-#define P9_07_REG NONE      //  5v
-#define P9_08_REG NONE      //  5v
-#define P9_09_REG NONE      //  PWR
+    src_clk_x1: src_clk_x1 {#clock-cells = <0>;compatible = "fixed-clock";clock-frequency = <20000000>;};
+    src_clk_osc1: src_clk_osc1 {#clock-cells = <0>;compatible = "fixed-clock";clock-frequency = <24000000>;};
+    src_clk_osc4: src_clk_osc4 {#clock-cells = <0>;compatible = "fixed-clock";clock-frequency = <24000000>;};
 
-#define P9_10_REG NONE      //  RESET
-#define P9_11A_REG 0x172C   //  pr2_pru0_gpo14
-#define P9_11B_REG 0x1620   //  gpio8_17
-#define P9_12_REG 0x16AC    //  gpio5_0
-#define P9_13A_REG 0x1730   //  pr2_pru0_gpo15
-#define P9_13B_REG 0x1680   //  gpio6_12
-#define P9_14_REG 0x15AC    //  gpio4_25
-#define P9_15_REG 0x1514    //  gpio3_12
-#define P9_16_REG 0x15B0    //  gpio4_26
-#define P9_17A_REG 0x17CC   //  gpio7_17
-#define P9_17B_REG 0x16B8   //  gpio5_3
-#define P9_18A_REG 0x17C8   //  gpio7_16
-#define P9_18B_REG 0x16B4   //  gpio5_2
-#define P9_19A_REG 0x1440   //  gpio7_3
-#define P9_19B_REG 0x157C   //  gpio4_6
+    leds {
+        compatible = "gpio-leds";
+        led0 {label = "beaglebone:green:usr0";gpios = <&gpio3 14 GPIO_ACTIVE_HIGH>;linux,default-trigger = "heartbeat";default-state = "off";};
+        led1 {label = "beaglebone:green:usr1";gpios = <&gpio3 15 GPIO_ACTIVE_HIGH>;linux,default-trigger = "mmc0";default-state = "off";};
+        led2 {label = "beaglebone:green:usr2";gpios = <&gpio5 5 GPIO_ACTIVE_HIGH>;linux,default-trigger = "cpu";default-state = "off";};
+        led3 {label = "beaglebone:green:usr3";gpios = <&gpio3 17 GPIO_ACTIVE_HIGH>;linux,default-trigger = "mmc1";default-state = "off";};
+        };
 
-#define P9_20A_REG 0x1444   //  gpio7_4
-#define P9_20B_REG 0x1578   //  gpio4_5
-#define P9_21A_REG 0x14F0   //  gpio3_3
-#define P9_21B_REG 0x17C4   //  gpio7_15
-#define P9_22A_REG 0x169C   //  gpio6_19
-#define P9_22B_REG 0x17C0   //  gpio7_14
-#define P9_23_REG 0x17B4    //  gpio7_11
-#define P9_24_REG 0x168C    //  gpio6_15
-#define P9_25_REG 0x1694    //  gpio6_17
-#define P9_26A_REG 0x1688   //  gpio6_14
-#define P9_26B_REG 0x1544   //  gpio3_24
-#define P9_27A_REG 0x15A0   //  gpio4_15
-#define P9_27B_REG 0x16B0   //  gpio5_1
-#define P9_28_REG 0x16E0    //  gpio4_17
-#define P9_29A_REG 0x16D8   //  gpio5_11
-#define P9_29B_REG 0x16A8   //  gpio7_30
+    &davinci_mdio {reset-gpios = <&gpio2 23 GPIO_ACTIVE_LOW>;reset-delay-us = <2>;phy0: ethernet-phy@1 {reg = <4>;};};
+    &mac {slaves = <1>;status = "okay";};
+    &cpsw_emac0 {phy-handle = <&phy0>;phy-mode = "rgmii";};
 
-#define P9_30_REG 0x16DC    //  gpio5_12
-#define P9_31A_REG 0x16D4   //  gpio5_10
-#define P9_31B_REG 0x16A4   //  gpio7_31
-#define P9_32_REG NONE      //  VADC
-#define P9_33_REG NONE      //  AIN4
-#define P9_34_REG NONE      //  AGND
-#define P9_35_REG NONE      //  AIN6
-#define P9_36_REG NONE      //  AIN5
-#define P9_37_REG NONE      //  AIN2
-#define P9_38_REG NONE      //  AIN3
-#define P9_39_REG NONE      //  AIN0
+    &mmc1 {status = "okay";vmmc-supply = <&vdd_3v3>;vmmc_aux-supply = <&vdd_sd>;vqmmc-supply = <&vdd_sd>;bus-width = <4>;max-frequency = <24000000>;cd-gpios = <&gpio6 27 GPIO_ACTIVE_LOW>;pinctrl-names = "default", "hs", "sdr12", "sdr25", "sdr50", "ddr50", "sdr104";pinctrl-0 = <&mmc1_pins_default>;pinctrl-1 = <&mmc1_pins_hs>;pinctrl-2 = <&mmc1_pins_default>;pinctrl-3 = <&mmc1_pins_hs>;pinctrl-4 = <&mmc1_pins_sdr50>;pinctrl-5 = <&mmc1_pins_ddr50 &mmc1_iodelay_ddr_rev20_conf>;pinctrl-6 = <&mmc1_pins_ddr50 &mmc1_iodelay_sdr104_rev20_conf>;};
+    &mmc2 {status = "okay";vmmc-supply = <&vdd_3v3>;bus-width = <8>;ti,non-removable;non-removable;max-frequency = <96000000>;no-1-8-v;/delete-property/ mmc-hs200-1_8v;pinctrl-names = "default", "hs";pinctrl-0 = <&mmc2_pins_default>;pinctrl-1 = <&mmc2_pins_default>;};
 
-#define P9_40_REG NONE      //  AIN1
-#define P9_41A_REG 0x16A0   //  gpio6_20
-#define P9_41B_REG 0x1580   //  gpio4_7
-#define P9_42A_REG 0x16E4   //  gpio4_18
-#define P9_42B_REG 0x159C   //  gpio4_14
-#define P9_43_REG NONE      //  GND
-#define P9_44_REG NONE      //  GND
-#define P9_45_REG NONE      //  GND
-#define P9_46_REG NONE      //  GND
+    &usb2_phy1 {phy-supply = <&ldousb_reg>;};
+    &usb2_phy2 {phy-supply = <&ldousb_reg>;};
+    &usb1 {dr_mode = "host";};
+    &omap_dwc3_2 {extcon = <&extcon_usb2>;};
+    &usb2 {dr_mode = "peripheral";};
 
-// Modes and flags ---------------------------------------------------------------------------------
+    &cpu_trips {cpu_alert1: cpu_alert1 {temperature = <50000>;/hysteresis = <2000>;type = "active";};};
+    &cpu_cooling_maps {map1 {trip = <&cpu_alert1>;};};
+    &thermal_zones {board_thermal: board_thermal {polling-delay-passive = <1250>;polling-delay = <1500>;board_trips: trips {board_alert0: board_alert {temperature = <40000>;hysteresis = <2000>;type = "active";};board_crit: board_crit {temperature = <105000>;hysteresis = <0>;type = "critical";};};board_cooling_maps: cooling-maps {map0 {trip = <&board_alert0>;};};};};
+    &cpu_alert0 {temperature = <80000>;};
+    &cpu_crit {temperature = <90000>;};
+    &gpu_crit {temperature = <90000>;};
+    &core_crit {temperature = <90000>;};
+    &dspeve_crit {temperature = <90000>;};
+    &iva_crit {temperature = <90000>;};
+    &cpu0_opp_table {opp-shared;};
 
-#define WAKEUPEVENT     (1<<25)
-#define WAKEUPENABLE    (1<<24)
-#define SLEWCTRL_SLOW   (1<<19) //if not set, slew rate is fast
-#define INPUTENABLE     (1<<18) //To read, set this bit
-#define PULLUP          (1<<17) //Set for up, dont set for down
-#define PULLDISABLE     (1<<16) //Set to disable(!) pull
-#define MODESELECT      (1<<8)  //if not set, default timing is used
-#define DELAYMODE       (1<<4)  //4-bit field, specifies mode when MODESELECT is 1
-#define MUXMODE         (1<<0)  //4-bit field, specifies the pin function according to mux tables
+    &mailbox5 {status = "okay";mbox_ipu1_ipc3x: mbox_ipu1_ipc3x {status = "okay";};mbox_dsp1_ipc3x: mbox_dsp1_ipc3x {status = "okay";};};
+    &mailbox6 {status = "okay";mbox_ipu2_ipc3x: mbox_ipu2_ipc3x {status = "okay";};mbox_dsp2_ipc3x: mbox_dsp2_ipc3x {status = "okay";};};
 
-#define MODE_GPIO       (14)
-#define MODE_OFF        (15)
-
-// Device tree -------------------------------------------------------------------------------------
-
-#include "am5729-beagleboneai.dts" //basic tree for beaglebone ai
-
-// make it easy to determine which dtb you're currently running on
-// (via /proc/device-tree/chosen/)  
-/ {  
- chosen {  
-  base_dtb = "HW.dts";  
-  base_dtb_timestamp = __TIMESTAMP__;  
- };  
-};
-
-// Default all to gpio-input
-&cape_pins_default {  
- pinctrl-single,pins = < 
-  P8_03_REG (MODE_GPIO|INPUTENABLE)
-  P8_04_REG (MODE_GPIO|INPUTENABLE)
-  P8_05_REG (MODE_GPIO|INPUTENABLE)
-  P8_06_REG (MODE_GPIO|INPUTENABLE)
-  P8_07_REG (MODE_GPIO|INPUTENABLE)
-  P8_08_REG (MODE_GPIO|INPUTENABLE)
-  P8_09_REG (MODE_GPIO|INPUTENABLE)
-  P8_10_REG (MODE_GPIO|INPUTENABLE)
-
-  P8_11_REG (MODE_GPIO|INPUTENABLE)
-  P8_12_REG (MODE_GPIO|INPUTENABLE)
-  P8_13_REG (MODE_GPIO|INPUTENABLE)
-  P8_14_REG (MODE_GPIO|INPUTENABLE)
-  P8_15A_REG (MODE_GPIO|INPUTENABLE)
-  P8_15B_REG (MODE_OFF)
-  P8_16_REG (MODE_GPIO|INPUTENABLE)
-  P8_17_REG (MODE_GPIO|INPUTENABLE)
-  P8_18_REG (MODE_GPIO|INPUTENABLE)
-  P8_19_REG (MODE_GPIO|INPUTENABLE)
-
-  P8_20_REG (MODE_GPIO|INPUTENABLE)
-  P8_21_REG (MODE_GPIO|INPUTENABLE)
-  P8_22_REG (MODE_GPIO|INPUTENABLE)
-  P8_23_REG (MODE_GPIO|INPUTENABLE)
-  P8_24_REG (MODE_GPIO|INPUTENABLE)
-  P8_25_REG (MODE_GPIO|INPUTENABLE)
-  P8_26_REG (MODE_GPIO|INPUTENABLE)
-  P8_27A_REG (MODE_GPIO|INPUTENABLE)
-  P8_27B_REG (MODE_OFF)
-  P8_28A_REG (MODE_GPIO|INPUTENABLE)
-  P8_28B_REG (MODE_OFF)
-  P8_29A_REG (MODE_GPIO|INPUTENABLE)
-  P8_29B_REG (MODE_OFF)
-
-  P8_30A_REG (MODE_GPIO|INPUTENABLE)
-  P8_30B_REG (MODE_OFF)
-  P8_31A_REG (MODE_GPIO|INPUTENABLE)
-  P8_31B_REG (MODE_OFF)
-  P8_32A_REG (MODE_GPIO|INPUTENABLE)
-  P8_32B_REG (MODE_OFF)
-  P8_33A_REG (MODE_GPIO|INPUTENABLE)
-  P8_33B_REG (MODE_OFF)
-  P8_34A_REG (MODE_GPIO|INPUTENABLE)
-  P8_34B_REG (MODE_OFF)
-  P8_35A_REG (MODE_GPIO|INPUTENABLE)
-  P8_35B_REG (MODE_OFF)
-  P8_36A_REG (MODE_GPIO|INPUTENABLE)
-  P8_36B_REG (MODE_OFF)
-  P8_37A_REG (MODE_GPIO|INPUTENABLE)
-  P8_37B_REG (MODE_OFF)
-  P8_38A_REG (MODE_GPIO|INPUTENABLE)
-  P8_38B_REG (MODE_OFF)
-  P8_39_REG  (MODE_GPIO|INPUTENABLE)
-
-  P8_40_REG (MODE_GPIO|INPUTENABLE)
-  P8_41_REG (MODE_GPIO|INPUTENABLE)
-  P8_42_REG (MODE_GPIO|INPUTENABLE)
-  P8_43_REG (MODE_GPIO|INPUTENABLE)
-  P8_44_REG (MODE_GPIO|INPUTENABLE)
-  P8_45A_REG (MODE_GPIO|INPUTENABLE)
-  P8_45B_REG (MODE_OFF)
-  P8_46A_REG (MODE_GPIO|INPUTENABLE)
-  P8_46B_REG (MODE_OFF)
-
-  P9_11A_REG (MODE_GPIO|INPUTENABLE)
-  P9_11B_REG (MODE_OFF)
-  P9_12_REG (MODE_GPIO|INPUTENABLE)
-  P9_13A_REG (MODE_GPIO|INPUTENABLE)
-  P9_13B_REG (MODE_OFF)
-  P9_14_REG (MODE_GPIO|INPUTENABLE)
-  P9_15_REG (MODE_GPIO|INPUTENABLE)
-  P9_16_REG (MODE_GPIO|INPUTENABLE)
-  P9_17A_REG (MODE_GPIO|INPUTENABLE)
-  P9_17B_REG (MODE_OFF)
-  P9_18A_REG (MODE_GPIO|INPUTENABLE)
-  P9_18B_REG (MODE_OFF)
-  P9_19A_REG (MODE_GPIO|INPUTENABLE)
-  P9_19B_REG (MODE_OFF)
-
-  P9_20A_REG (MODE_GPIO|INPUTENABLE)
-  P9_20B_REG (MODE_OFF)
-  P9_21A_REG (MODE_GPIO|INPUTENABLE)
-  P9_21B_REG (MODE_OFF)
-  P9_22A_REG (MODE_GPIO|INPUTENABLE)
-  P9_22B_REG (MODE_OFF)
-  P9_23_REG (MODE_GPIO|INPUTENABLE)
-  P9_24_REG (MODE_GPIO|INPUTENABLE)
-  P9_25_REG (MODE_GPIO|INPUTENABLE)
-  P9_26A_REG (MODE_GPIO|INPUTENABLE)
-  P9_26B_REG (MODE_OFF)
-  P9_27A_REG (MODE_GPIO|INPUTENABLE)
-  P9_27B_REG (MODE_OFF)
-  P9_28_REG (MODE_GPIO|INPUTENABLE)
-  P9_29A_REG (MODE_GPIO|INPUTENABLE)
-  P9_29B_REG (MODE_OFF)
-  P9_30_REG (MODE_GPIO|INPUTENABLE)
-
-  P9_31A_REG (MODE_GPIO|INPUTENABLE)
-  P9_31B_REG (MODE_OFF)
-
-  P9_41A_REG (MODE_GPIO|INPUTENABLE)
-  P9_41B_REG (MODE_OFF)
-  P9_42A_REG (MODE_GPIO|INPUTENABLE)
-  P9_42B_REG (MODE_OFF)
- >;
+    ocp {
+        dsp2_system: dsp_system@41500000 {compatible = "syscon";reg = <0x41500000 0x100>;};
+        omap_dwc3_4: omap_dwc3_4@48940000 {compatible = "ti,dwc3";ti,hwmods = "usb_otg_ss4";reg = <0x48940000 0x10000>;interrupts = <GIC_SPI 346 IRQ_TYPE_LEVEL_HIGH>;#address-cells = <1>;#size-cells = <1>;utmi-mode = <2>;ranges;status = "disabled";usb4: usb@48950000 {compatible = "snps,dwc3";reg = <0x48950000 0x17000>;interrupts = <GIC_SPI 345 IRQ_TYPE_LEVEL_HIGH>,<GIC_SPI 345 IRQ_TYPE_LEVEL_HIGH>,<GIC_SPI 346 IRQ_TYPE_LEVEL_HIGH>;interrupt-names = "peripheral","host","otg";maximum-speed = "high-speed";dr_mode = "otg";};};
+        target-module@41501000 {compatible = "ti,sysc-omap2", "ti,sysc";reg = <0x41501000 0x4>,<0x41501010 0x4>,<0x41501014 0x4>;reg-names = "rev", "sysc", "syss";ti,sysc-sidle = <SYSC_IDLE_FORCE>,<SYSC_IDLE_NO>,<SYSC_IDLE_SMART>;ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |SYSC_OMAP2_SOFTRESET |SYSC_OMAP2_AUTOIDLE)>;clocks = <&dsp2_clkctrl DRA7_DSP2_MMU0_DSP2_CLKCTRL 0>;clock-names = "fck";resets = <&prm_dsp2 1>;reset-names = "rstctrl";ranges = <0x0 0x41501000 0x1000>;#size-cells = <1>;#address-cells = <1>;mmu0_dsp2: mmu@0 {compatible = "ti,dra7-dsp-iommu";reg = <0x0 0x100>;interrupts = <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>;#iommu-cells = <0>;ti,syscon-mmuconfig = <&dsp2_system 0x0>;};};
+        target-module@41502000 {compatible = "ti,sysc-omap2", "ti,sysc";reg = <0x41502000 0x4>,<0x41502010 0x4>,<0x41502014 0x4>;reg-names = "rev", "sysc", "syss";ti,sysc-sidle = <SYSC_IDLE_FORCE>,<SYSC_IDLE_NO>,<SYSC_IDLE_SMART>;ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |SYSC_OMAP2_SOFTRESET |SYSC_OMAP2_AUTOIDLE)>;clocks = <&dsp2_clkctrl DRA7_DSP2_MMU0_DSP2_CLKCTRL 0>;clock-names = "fck";resets = <&prm_dsp2 1>;reset-names = "rstctrl";ranges = <0x0 0x41502000 0x1000>;#size-cells = <1>;#address-cells = <1>;mmu1_dsp2: mmu@0 {compatible = "ti,dra7-dsp-iommu";reg = <0x0 0x100>;interrupts = <GIC_SPI 147 IRQ_TYPE_LEVEL_HIGH>;#iommu-cells = <0>;ti,syscon-mmuconfig = <&dsp2_system 0x1>;};};
+    };
 };
