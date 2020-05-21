@@ -1,21 +1,4 @@
-//device tree stuff --------------------------------------------------------------------------------
 
 see 
 https://www.element14.com/community/community/project14/visionthing/blog/2019/11/16/beagleboard-ai-brick-recovery-procedure#jive_content_id_a_BBAI_compatible_dts_file
 on how to construct a dts for the bbai
-
-in case a device tree breaks the boot:
-    boot from sd-card, then:
-
-    sudo mkdir /mnt/emmc
-    sudo mount -t ext4 /dev/mmcblk1p1 /mnt/emmc
-
-    goto uenv and fix it:
-    sudo nano /mnt/emmc/boot/uEnv.txt
-
-    sudo umount /mnt/emmc
-
-to see the loaded tree:
-    /proc/device-tree/chosen/
-    see pinmuxer: cat /sys/kernel/debug/pinctrl/4a003400.pinmux/pins
-    show-pins

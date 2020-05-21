@@ -1,11 +1,5 @@
-#include <dt-bindings/gpio/gpio.h>
-#include <dt-bindings/interrupt-controller/irq.h>
-#include <dt-bindings/pinctrl/dra.h>
-
 // Pin <-> offset definitions ----------------------------------------------------------------------
 
-#define P8_01_REG NONE      //  GND
-#define P8_02_REG NONE      //  GND
 #define P8_03_REG 0x179C    //  gpio1_24
 #define P8_04_REG 0x17A0    //  gpio1_25
 #define P8_05_REG 0x178C    //  gpio7_1
