@@ -6,6 +6,7 @@ import struct
 import os.path as op
 
 DATA_ATTR = QtCore.Qt.UserRole
+DATA_VALUEDISPLAY = DATA_ATTR+1
 
 class DataTree(QtCore.QObject):
     def __init__(self, definition):
@@ -29,15 +30,18 @@ class DataTree(QtCore.QObject):
         for k,v in dct.items():
             isLeaf = any((x.startswith("_") for x in v))
             qtItem = QtGui.QStandardItem(k)
+            qtItem.parentObj = target
             if isLeaf:
                 streamdir = v.get("stream_dir")
                 if streamdir == "up":     self.upstreamVars.append(qtItem)
                 elif streamdir == "down": self.downstreamvars.append(qtItem)
-                qtItem.setData(v, DATA_ATTR)
                 qtItem.value = 0
-            qtItem.parentObj = target
-            target.appendRow(qtItem)
-            if not isLeaf: 
+                valueDisplay = QtGui.QStandardItem(str(qtItem.value))
+                qtItem.setData(v, DATA_ATTR)
+                qtItem.setData(valueDisplay, DATA_VALUEDISPLAY)
+                target.appendRow([qtItem, valueDisplay])
+            else:
+                target.appendRow(qtItem)
                 self._dict2qtModel(v,qtItem)
 
         self.upstreamFmt = "".join((x.data(DATA_ATTR)["_type"] for x in self.upstreamVars))
@@ -46,12 +50,22 @@ class DataTree(QtCore.QObject):
         self.downstreamLen = struct.calcsize(self.downstreamFmt)
 
     def recvUpstreamDatagram(self, sock):
-        rawData = sock.readDatagram(self.upstreamlen)
+        rawData = sock.readDatagram(self.upstreamLen)
         data = struct.unpack(self.upstreamFmt,rawData[0])
+        for newval, var in zip(data, self.upstreamVars):var.value = newval
+
+    def recvDownstreamDatagram(self, sock):
+        rawData = sock.readDatagram(self.downstreamLen)
+        data = struct.unpack(self.downstreamFmt,rawData[0])
+        for newval, var in zip(data, self.downstreamVars):var.value = newval
 
     def sendUpstreamDatagram(self, sock):
         data = struct.pack(self.upstreamFmt,*(x.value for x in self.upstreamVars))
         sock.writeDatagram(data, QtNetwork.QHostAddress.Broadcast, 6000)
+
+    def sendDownstreamDatagram(self, sock):
+        data = struct.pack(self.downstreamFmt,*(x.value for x in self.downstreamVars))
+        sock.writeDatagram(data, QtNetwork.QHostAddress.Broadcast, 6001)
 
     def getUpstreamVarDict(self):
         dct = {}
@@ -73,6 +87,14 @@ class DataTree(QtCore.QObject):
             pn.append(x.text())
             return pn
 
+    def syncQtVals(self):
+        for x in self.upstreamVars:
+            vd = x.data(DATA_VALUEDISPLAY)
+            vd.setText(str(x.value))
+        for x in self.downstreamVars:
+            vd = x.data(DATA_VALUEDISPLAY)
+            x.value = int(vd.text()) #TODO: proper casting
+
 class DataTreeServerPlugin():
     def __init__(self, rootapp): 
         self.rootapp = rootapp
@@ -85,11 +107,15 @@ class DataTreeGuiPlugin():
         self.rootapp = rootapp
         self.data = DataTree(op.join(op.dirname(__file__),"data.json"))
         self.widget = Widget(self, rootapp)
+        self.updateTimer = QtCore.QTimer()
+        self.updateTimer.setInterval(1000)
+        self.updateTimer.timeout.connect(self.data.syncQtVals)
 
     def getActionDict(self):
         return {"toggleDataTree" : (self.widget.togglehide, "Ctrl+l")}
     
-    def start(self):pass
+    def start(self):
+        self.updateTimer.start()
 
 class Widget(QtWidgets.QDockWidget):
     def __init__(self, parent, app):

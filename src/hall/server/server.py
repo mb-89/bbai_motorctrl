@@ -33,6 +33,7 @@ class App(QtCore.QCoreApplication):
 
     def run(self):
         for k,v in self.plugins.items(): v.start()
+        self.socket.readyRead.connect(self.recvudp)
         self.timer.start()
         self.exec_()
 
@@ -41,13 +42,17 @@ class App(QtCore.QCoreApplication):
         self.upstreamvars["motor.act.hall1"].value = self.GPIOs["H2"].read()
         self.upstreamvars["motor.act.hall2"].value = self.GPIOs["H3"].read()
 
-        self.samplecnt+=1
-        if (self.samplecnt % 100) == 0:
-            print(  self.samplecnt,
-                    self.upstreamvars["motor.act.hall0"].value,
-                    self.upstreamvars["motor.act.hall1"].value,
-                    self.upstreamvars["motor.act.hall2"].value)
-            self.plugins["data"].data.sendUpstreamDatagram(self.socket)
+        if self.downstreamvars["sys.ref.kill"].value: self.quit()
+
+        self.upstreamvars["sys.act.upstreamcnt"].value += 1
+
+        self.plugins["data"].data.sendUpstreamDatagram(self.socket)
+
+    def recvudp(self):
+        datatree = self.plugins["data"].data
+        while self.socket.hasPendingDatagrams():
+            datatree.recvDownstreamDatagram(self.socket)
+
 
     def __del__(self):
         self.socket.close()

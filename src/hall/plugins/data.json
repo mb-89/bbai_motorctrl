@@ -10,6 +10,11 @@
     },
     "sys":
     {
+        "act":
+        {
+            "upstreamcnt": {"_type": "I","stream_dir": "up"},
+            "downstreamcnt": {"_type": "I","stream_dir": "down"}
+        },
         "ref":
         {
             "kill": {"_type": "?", "stream_dir":"down"}

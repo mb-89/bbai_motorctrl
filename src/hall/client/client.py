@@ -21,16 +21,25 @@ class App(QtWidgets.QApplication):
         self.socket = QtNetwork.QUdpSocket()
         self.socket.bind(QtNetwork.QHostAddress(""), 6000)
 
+        self.timer = QtCore.QTimer()
+        self.timer.setInterval(10)
+        self.timer.timeout.connect(self.sample)
+
     def run(self):
         self.gui.start()
         for k,v in self.plugins.items(): v.start()
         self.socket.readyRead.connect(self.recvudp)
+        self.timer.start()
         self.exec_()
 
     def recvudp(self):
         datatree = self.plugins["datatree"].data
         while self.socket.hasPendingDatagrams():
             datatree.recvUpstreamDatagram(self.socket)
+
+    def sample(self):
+        self.upstreamvars["sys.act.downstreamcnt"].value += 1
+        self.plugins["data"].data.sendDownstreamDatagram(self.socket)
 
     def __del__(self):
         self.socket.close()
