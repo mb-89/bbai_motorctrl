@@ -1,5 +1,6 @@
 
 from PyQt5 import QtCore, QtGui,QtWidgets
+from PyQt5 import QtNetwork
 import json
 import struct
 import os.path as op
@@ -8,6 +9,7 @@ DATA_ATTR = QtCore.Qt.UserRole
 
 class DataTree(QtCore.QObject):
     def __init__(self, definition):
+        super().__init__()
         self._defpath = definition
         self._dict2qtModel(json.load(open(definition,"r")))
 
@@ -20,6 +22,7 @@ class DataTree(QtCore.QObject):
             self.downstreamvars = []
             root = self.mdl.invisibleRootItem()
             target = root
+            target.parentObj = None
         else:
             target = _parent
 
@@ -32,6 +35,7 @@ class DataTree(QtCore.QObject):
                 elif streamdir == "down": self.downstreamvars.append(qtItem)
                 qtItem.setData(v, DATA_ATTR)
                 qtItem.value = 0
+            qtItem.parentObj = target
             target.appendRow(qtItem)
             if not isLeaf: 
                 self._dict2qtModel(v,qtItem)
@@ -41,9 +45,40 @@ class DataTree(QtCore.QObject):
         self.downstreamFmt = "".join((x.data(DATA_ATTR)["_type"] for x in self.downstreamvars))
         self.downstreamLen = struct.calcsize(self.downstreamFmt)
 
-    def readDatagram(self, sock):
+    def recvUpstreamDatagram(self, sock):
         rawData = sock.readDatagram(self.upstreamlen)
         data = struct.unpack(self.upstreamFmt,rawData[0])
+
+    def sendUpstreamDatagram(self, sock):
+        data = struct.pack(self.upstreamFmt,*(x.value for x in self.upstreamVars))
+        sock.writeDatagram(data, QtNetwork.QHostAddress.Broadcast, 6000)
+
+    def getUpstreamVarDict(self):
+        dct = {}
+        for x in self.upstreamVars:
+            dct[".".join(self.getFullName(x))] = x
+        return dct
+
+    def getDownstreamVarDict(self):
+        dct = {}
+        for x in self.downstreamVars:
+            dct[".".join(self.getFullName(x))] = x
+        return dct
+
+    def getFullName(self, x):
+        if x.parentObj is None:
+            return []
+        else:
+            pn = self.getFullName(x.parentObj)
+            pn.append(x.text())
+            return pn
+
+class DataTreeServerPlugin():
+    def __init__(self, rootapp): 
+        self.rootapp = rootapp
+        self.data = DataTree(op.join(op.dirname(__file__),"data.json"))
+
+    def start(self):pass
 
 class DataTreeGuiPlugin():
     def __init__(self, rootapp):

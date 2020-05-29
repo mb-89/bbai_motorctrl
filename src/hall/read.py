@@ -42,9 +42,9 @@ def printGPIODATAIN(mem):
     print(datastrSplit)
 
 def registerGPIO(GPIOnr):
-    exists = os.system(f"cat /sys/class/gpio/gpio{GPIOnr}/value > /dev/null 2>&1") == 0
+    exists = os.system(f"cat /sys/class/gpio/gpio{GPIOnr}/value") == 0
     if exists: return
-    os.system(f"echo {GPIOnr} > /sys/class/gpio/export > /dev/null 2>&1")
+    os.system(f"echo {GPIOnr} > /sys/class/gpio/export")
 
 class Mem():
     def __init__(self, offset, size):

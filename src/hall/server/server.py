@@ -1,7 +1,9 @@
 from PyQt5 import QtCore
+from PyQt5 import QtNetwork
 
 #import plugins here
 from plugins.bbai_GPIO import GPIOplugin
+from plugins.data import DataTreeServerPlugin
 
 class App(QtCore.QCoreApplication):
     def __init__(self):
@@ -9,7 +11,8 @@ class App(QtCore.QCoreApplication):
 
         #integrate plugins here
         self.plugins = {
-            "GPIO": GPIOplugin(self)
+            "GPIO": GPIOplugin(self),
+            "data": DataTreeServerPlugin(self)
         }
 
         self.GPIOs = {
@@ -18,21 +21,33 @@ class App(QtCore.QCoreApplication):
             "H3": self.plugins["GPIO"].getPinHandler(header=8, pin=18)
         }
 
+        self.upstreamvars = self.plugins["data"].data.getUpstreamVarDict()
+
+        self.socket = QtNetwork.QUdpSocket()
+        self.socket.bind(QtNetwork.QHostAddress(""), 6001)
+
+        self.samplecnt = 0
+        self.timer = QtCore.QTimer()
+        self.timer.setInterval(10)
+        self.timer.timeout.connect(self.sample)
+
     def run(self):
         for k,v in self.plugins.items(): v.start()
-
-        self.cnt = 0
-        self.slowTimer = QtCore.QTimer()
-        self.slowTimer.setInterval(10)
-        self.slowTimer.timeout.connect(self.sampleSlow)
-        self.slowTimer.start()
-
+        self.timer.start()
         self.exec_()
 
-    def sampleSlow(self):
-        data = (self.GPIOs["H1"].read(), self.GPIOs["H2"].read(), self.GPIOs["H3"].read())
-        self.cnt+=1
-        if self.cnt%100 == 0:
-            print(data)
+    def sample(self):
+        self.upstreamvars["motor.act.hall0"].value = self.GPIOs["H1"].read()
+        self.upstreamvars["motor.act.hall1"].value = self.GPIOs["H2"].read()
+        self.upstreamvars["motor.act.hall2"].value = self.GPIOs["H3"].read()
 
-        pass # we only need this to catch ctrc-c
+        self.samplecnt+=1
+        if (self.samplecnt % 100) == 0:
+            print(  self.samplecnt,
+                    self.upstreamvars["motor.act.hall0"].value,
+                    self.upstreamvars["motor.act.hall1"].value,
+                    self.upstreamvars["motor.act.hall2"].value)
+            self.plugins["data"].data.sendUpstreamDatagram(self.socket)
+
+    def __del__(self):
+        self.socket.close()

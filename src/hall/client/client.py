@@ -20,7 +20,6 @@ class App(QtWidgets.QApplication):
 
         self.socket = QtNetwork.QUdpSocket()
         self.socket.bind(QtNetwork.QHostAddress(""), 6000)
-        self.recvcnt = 0
 
     def run(self):
         self.gui.start()
@@ -31,8 +30,7 @@ class App(QtWidgets.QApplication):
     def recvudp(self):
         datatree = self.plugins["datatree"].data
         while self.socket.hasPendingDatagrams():
-            datatree.readDatagram(self.socket)
-        self.recvcnt+=1
+            datatree.recvUpstreamDatagram(self.socket)
 
     def __del__(self):
         self.socket.close()

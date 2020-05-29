@@ -47,10 +47,8 @@ class GPIOplugin():
             return handler
 
     def openGPIOBank(self, nr):
-        fd = open("/dev/mem", "r+b" )
-        mem = mmap(fd.fileno(), SIZE_GPIO, offset=OFFSET_GPIOBANK0+nr*SIZE_GPIOBANK)
-        self._gpiofds[nr] = fd
-        self.gpioBanks[nr] = mem
+        self._gpiofds[nr] = open("/dev/mem", "r+b" )
+        self.gpioBanks[nr] = mmap(self._gpiofds[nr].fileno(), SIZE_GPIO, offset=OFFSET_GPIOBANK0+nr*SIZE_GPIOBANK)
 
         return self.gpioBanks[nr]
 
@@ -65,8 +63,8 @@ class GPIOhandler():
         self.rootapp = parent.rootapp
 
         #if the pin is not exposed in the os, do it:
-        osOk = os.system(f"cat /sys/class/gpio/gpio{pinInfo.nr}/value > /dev/null 2>&1") == 0
-        if not osOk: osOk = os.system(f"echo {pinInfo.nr} > /sys/class/gpio/export > /dev/null 2>&1") == 0
+        osOk = os.system(f"cat /sys/class/gpio/gpio{pinInfo.nr}/value") == 0
+        if not osOk: osOk = os.system(f"echo {pinInfo.nr} > /sys/class/gpio/export") == 0
 
         #open the needed shared mem
         mem = parent.gpioBanks.get(self.pinInfo.bank)
