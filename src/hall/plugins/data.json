@@ -1,0 +1,18 @@
+{
+    "motor":
+    {
+        "act":
+        {
+            "hall0": {"_type": "f", "stream_dir": "up"},
+            "hall1": {"_type": "f", "stream_dir": "up"},
+            "hall2": {"_type": "f", "stream_dir": "up"}
+        }
+    },
+    "sys":
+    {
+        "ref":
+        {
+            "kill": {"_type": "?", "stream_dir":"down"}
+        }
+    }
+}

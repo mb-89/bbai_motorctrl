@@ -19,3 +19,7 @@ to see the loaded tree:
     /proc/device-tree/chosen/
     see pinmuxer: cat /sys/kernel/debug/pinctrl/4a003400.pinmux/pins
     show-pins
+
+at the beginning, we set all inputs to "unused" (mode 15) so we can clearly see that
+we have control over all of them. later, we can enable only the pins that we need and the
+corresponding subsystems.
