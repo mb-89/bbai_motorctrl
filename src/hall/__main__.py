@@ -11,6 +11,7 @@ def main():
         App().run()
 
     elif runServer:
-        pass #do later
+        from server.server import App
+        App().run()
 
 if __name__ == "__main__":main()
