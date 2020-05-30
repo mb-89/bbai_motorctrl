@@ -42,7 +42,7 @@ class App(QtCore.QCoreApplication):
         self.upstreamvars["motor.act.hall1"].value = self.GPIOs["H2"].read()
         self.upstreamvars["motor.act.hall2"].value = self.GPIOs["H3"].read()
 
-        if self.downstreamvars["sys.ref.kill"].value: self.quit()
+        if self.downstreamVars["sys.ref.kill"].value: self.quit()
 
         self.upstreamvars["sys.act.upstreamcnt"].value += 1
 

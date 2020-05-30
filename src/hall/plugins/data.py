@@ -20,7 +20,7 @@ class DataTree(QtCore.QObject):
             self.mdl.setHorizontalHeaderLabels(["Var","Val"])
             self.mdl.setColumnCount(2)
             self.upstreamVars = []
-            self.downstreamvars = []
+            self.downstreamVars = []
             root = self.mdl.invisibleRootItem()
             target = root
             target.parentObj = None
@@ -34,9 +34,11 @@ class DataTree(QtCore.QObject):
             if isLeaf:
                 streamdir = v.get("stream_dir")
                 if streamdir == "up":     self.upstreamVars.append(qtItem)
-                elif streamdir == "down": self.downstreamvars.append(qtItem)
+                elif streamdir == "down": self.downstreamVars.append(qtItem)
                 qtItem.value = 0
-                valueDisplay = QtGui.QStandardItem(str(qtItem.value))
+                valstr = str(qtItem.value)
+                valueDisplay = QtGui.QStandardItem(valstr)
+                valueDisplay.oldText = valstr
                 qtItem.setData(v, DATA_ATTR)
                 qtItem.setData(valueDisplay, DATA_VALUEDISPLAY)
                 target.appendRow([qtItem, valueDisplay])
@@ -46,7 +48,7 @@ class DataTree(QtCore.QObject):
 
         self.upstreamFmt = "".join((x.data(DATA_ATTR)["_type"] for x in self.upstreamVars))
         self.upstreamLen = struct.calcsize(self.upstreamFmt)
-        self.downstreamFmt = "".join((x.data(DATA_ATTR)["_type"] for x in self.downstreamvars))
+        self.downstreamFmt = "".join((x.data(DATA_ATTR)["_type"] for x in self.downstreamVars))
         self.downstreamLen = struct.calcsize(self.downstreamFmt)
 
     def recvUpstreamDatagram(self, sock):
@@ -93,7 +95,18 @@ class DataTree(QtCore.QObject):
             vd.setText(str(x.value))
         for x in self.downstreamVars:
             vd = x.data(DATA_VALUEDISPLAY)
-            x.value = int(vd.text()) #TODO: proper casting
+            newstr = str(x.value)
+            oldstr = vd.oldText
+            currstr = vd.text()
+            #if the value was overridden by the user (via the text), use the text as new value
+            if currstr != oldstr:
+                x.value = int(currstr) #TODO: proper casting
+                vd.oldText = currstr
+            #if the value has changed (bc a part of the program modified it), update the value display
+            elif newstr != currstr:
+                vd.setText(newstr)
+                x.value = int(vd.text()) #TODO: proper casting
+                vd.oldText = newstr
 
 class DataTreeServerPlugin():
     def __init__(self, rootapp): 
