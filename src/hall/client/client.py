@@ -18,6 +18,9 @@ class App(QtWidgets.QApplication):
             "datatree": DataTreeGuiPlugin(self)
         }
 
+        self.upstreamvars = self.plugins["datatree"].data.getUpstreamVarDict()
+        self.downstreamvars = self.plugins["datatree"].data.getDownstreamVarDict()
+
         self.socket = QtNetwork.QUdpSocket()
         self.socket.bind(QtNetwork.QHostAddress(""), 6000)
 
@@ -38,8 +41,8 @@ class App(QtWidgets.QApplication):
             datatree.recvUpstreamDatagram(self.socket)
 
     def sample(self):
-        self.upstreamvars["sys.act.downstreamcnt"].value += 1
-        self.plugins["data"].data.sendDownstreamDatagram(self.socket)
+        self.downstreamvars["sys.act.downstreamcnt"].value += 1
+        self.plugins["datatree"].data.sendDownstreamDatagram(self.socket)
 
     def __del__(self):
         self.socket.close()

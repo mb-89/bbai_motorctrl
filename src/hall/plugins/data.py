@@ -36,7 +36,9 @@ class DataTree(QtCore.QObject):
                 if streamdir == "up":     self.upstreamVars.append(qtItem)
                 elif streamdir == "down": self.downstreamVars.append(qtItem)
                 qtItem.value = 0
-                valueDisplay = QtGui.QStandardItem(str(qtItem.value))
+                valstr = str(qtItem.value)
+                valueDisplay = QtGui.QStandardItem(valstr)
+                valueDisplay.oldText = valstr
                 qtItem.setData(v, DATA_ATTR)
                 qtItem.setData(valueDisplay, DATA_VALUEDISPLAY)
                 target.appendRow([qtItem, valueDisplay])
@@ -93,7 +95,18 @@ class DataTree(QtCore.QObject):
             vd.setText(str(x.value))
         for x in self.downstreamVars:
             vd = x.data(DATA_VALUEDISPLAY)
-            x.value = int(vd.text()) #TODO: proper casting
+            newstr = str(x.value)
+            oldstr = vd.oldText
+            currstr = vd.text()
+            #if the value was overridden by the user (via the text), use the text as new value
+            if currstr != oldstr:
+                x.value = int(currstr) #TODO: proper casting
+                vd.oldText = currstr
+            #if the value has changed (bc a part of the program modified it), update the value display
+            elif newstr != currstr:
+                vd.setText(newstr)
+                x.value = int(vd.text()) #TODO: proper casting
+                vd.oldText = newstr
 
 class DataTreeServerPlugin():
     def __init__(self, rootapp): 
