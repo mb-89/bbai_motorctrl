@@ -22,6 +22,7 @@ class App(QtCore.QCoreApplication):
         }
 
         self.upstreamvars = self.plugins["data"].data.getUpstreamVarDict()
+        self.downstreamvars = self.plugins["data"].data.getDownstreamVarDict()
 
         self.socket = QtNetwork.QUdpSocket()
         self.socket.bind(QtNetwork.QHostAddress(""), 6001)

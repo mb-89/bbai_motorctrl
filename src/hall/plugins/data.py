@@ -20,7 +20,7 @@ class DataTree(QtCore.QObject):
             self.mdl.setHorizontalHeaderLabels(["Var","Val"])
             self.mdl.setColumnCount(2)
             self.upstreamVars = []
-            self.downstreamvars = []
+            self.downstreamVars = []
             root = self.mdl.invisibleRootItem()
             target = root
             target.parentObj = None
@@ -34,7 +34,7 @@ class DataTree(QtCore.QObject):
             if isLeaf:
                 streamdir = v.get("stream_dir")
                 if streamdir == "up":     self.upstreamVars.append(qtItem)
-                elif streamdir == "down": self.downstreamvars.append(qtItem)
+                elif streamdir == "down": self.downstreamVars.append(qtItem)
                 qtItem.value = 0
                 valueDisplay = QtGui.QStandardItem(str(qtItem.value))
                 qtItem.setData(v, DATA_ATTR)
@@ -46,7 +46,7 @@ class DataTree(QtCore.QObject):
 
         self.upstreamFmt = "".join((x.data(DATA_ATTR)["_type"] for x in self.upstreamVars))
         self.upstreamLen = struct.calcsize(self.upstreamFmt)
-        self.downstreamFmt = "".join((x.data(DATA_ATTR)["_type"] for x in self.downstreamvars))
+        self.downstreamFmt = "".join((x.data(DATA_ATTR)["_type"] for x in self.downstreamVars))
         self.downstreamLen = struct.calcsize(self.downstreamFmt)
 
     def recvUpstreamDatagram(self, sock):
