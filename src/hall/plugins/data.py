@@ -7,6 +7,7 @@ import os.path as op
 
 DATA_ATTR = QtCore.Qt.UserRole
 DATA_VALUEDISPLAY = DATA_ATTR+1
+DATA_VALUEITEM = DATA_VALUEDISPLAY+1
 
 class DataTree(QtCore.QObject):
     def __init__(self, definition):
@@ -40,6 +41,8 @@ class DataTree(QtCore.QObject):
                 valueDisplay = QtGui.QStandardItem(valstr)
                 valueDisplay.oldText = valstr
                 qtItem.setData(v, DATA_ATTR)
+                qtItem.setData(qtItem, DATA_VALUEITEM)
+                valueDisplay.setData(qtItem, DATA_VALUEITEM)
                 qtItem.setData(valueDisplay, DATA_VALUEDISPLAY)
                 target.appendRow([qtItem, valueDisplay])
             else:
@@ -113,8 +116,6 @@ class DataTreeServerPlugin():
         self.rootapp = rootapp
         self.data = DataTree(op.join(op.dirname(__file__),"data.json"))
 
-    def start(self):pass
-
 class DataTreeGuiPlugin():
     def __init__(self, rootapp):
         self.rootapp = rootapp
@@ -129,6 +130,8 @@ class DataTreeGuiPlugin():
     
     def start(self):
         self.updateTimer.start()
+        for x in self.data.upstreamVars:x.value = 0
+        for x in self.data.downstreamVars:x.value = 0
 
 class Widget(QtWidgets.QDockWidget):
     def __init__(self, parent, app):

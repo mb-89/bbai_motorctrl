@@ -3,11 +3,16 @@ from PyQt5 import QtNetwork
 
 import struct
 import os.path as op
+import time
+from math import sin, pi
 
 #import plugins here
 from plugins.data import DataTree, DataTreeGuiPlugin
+from plugins.plot import PlotGuiPlugin
+from plugins.serverRC import ServerRCPlugin
 
 class App(QtWidgets.QApplication):
+    sampleSig = QtCore.pyqtSignal()
     def __init__(self):
         super().__init__([])
 
@@ -15,7 +20,9 @@ class App(QtWidgets.QApplication):
 
         #integrate plugins here
         self.plugins = {
-            "datatree": DataTreeGuiPlugin(self)
+            "datatree": DataTreeGuiPlugin(self),
+            "plots": PlotGuiPlugin(self),
+            "serverRC": ServerRCPlugin(self)
         }
 
         self.upstreamvars = self.plugins["datatree"].data.getUpstreamVarDict()
@@ -33,6 +40,7 @@ class App(QtWidgets.QApplication):
         for k,v in self.plugins.items(): v.start()
         self.socket.readyRead.connect(self.recvudp)
         self.timer.start()
+        self.t0 = time.time()
         self.exec_()
 
     def recvudp(self):
@@ -42,7 +50,14 @@ class App(QtWidgets.QApplication):
 
     def sample(self):
         self.downstreamvars["sys.act.downstreamcnt"].value += 1
+        #self.downstreamvars["sys.act.uptimeclient"].value = time.time()-self.t0
+
+        #f = self.downstreamvars["test.sin.freq"].value
+        #a = self.downstreamvars["test.sin.amp"].value
+        #self.downstreamvars["test.sin.val"].value = sin(2*pi*f)*a
+
         self.plugins["datatree"].data.sendDownstreamDatagram(self.socket)
+        self.sampleSig.emit()
 
     def __del__(self):
         self.socket.close()
