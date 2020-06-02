@@ -35,14 +35,14 @@ class ServerRCPlugin():
         self.sshcon.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.sshcon.connect("192.168.0.20", username="root", password="bbai")#yeah i know.
         #create ramdisk
-        stdin, stdout, stderr = self.sshcon.exec_command('mkdir /var/run/motorctrl_ramdisk')
+        stdin, stdout, stderr = self.sshcon.exec_command('mkdir /var/run/motorctrl_ramdisk_py')
         stdout.channel.recv_exit_status()
-        stdin, stdout, stderr = self.sshcon.exec_command('mount -t ramfs ramfs /var/run/motorctrl_ramdisk')
+        stdin, stdout, stderr = self.sshcon.exec_command('mount -t ramfs ramfs /var/run/motorctrl_ramdisk_py')
         stdout.channel.recv_exit_status()
 
         #copy stuff to ramdisk
-        src = op.abspath(op.join(op.dirname(__file__),"..",".."))
-        dst = "/var/run/motorctrl_ramdisk"
+        src = op.abspath(op.join(op.dirname(__file__),".."))
+        dst = "/var/run/motorctrl_ramdisk_py"
         with self.sshcon.open_sftp() as sftp: self.recursiveput(sftp, src,dst)
 
         #build remote code
@@ -51,7 +51,7 @@ class ServerRCPlugin():
         self.rootapp.plugins["datatree"].start()
 
         #start server
-        stdin, stdout, stderr = self.sshcon.exec_command('python3 /var/run/motorctrl_ramdisk/hall')
+        stdin, stdout, stderr = self.sshcon.exec_command('python3 /var/run/motorctrl_ramdisk_py')
         #we dont wait for this one.
 
     def __del__(self):

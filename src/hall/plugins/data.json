@@ -22,13 +22,13 @@
             "kill": {"_type": "?", "stream_dir":"down"}
         }
     },
-    "test":
+    "pru2_0":
     {
-        "sin":
+        "act":
         {
-            "freq": {"_type": "f","stream_dir": "down"},
-            "amp": {"_type": "f","stream_dir": "down"},
-            "val": {"_type": "f","stream_dir": "down"}
+            "H0": {"_type": "?", "stream_dir":"up"},
+            "H1": {"_type": "?", "stream_dir":"up"},
+            "H2": {"_type": "?", "stream_dir":"up"}
         }
     }
 }

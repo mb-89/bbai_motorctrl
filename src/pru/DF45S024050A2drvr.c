@@ -68,7 +68,7 @@ static inline void vEnableCoils(int iSeq, bool *bUL, bool *bVL, bool *bWL, bool 
     *bWL = (iSeq == 4) || (iSeq == 5);
 }
 
-static inline void vSetOutputs(bool bUL, bool bVL, bool bWL, bool bUH, bool bVH, bool bWH)
+static inline void vSetGPOs(bool bUL, bool bVL, bool bWL, bool bUH, bool bVH, bool bWH)
 {
     bSetGPO(BIT_OUT_UL, bUL);
     bSetGPO(BIT_OUT_VL, bVL);
@@ -87,7 +87,8 @@ void main(void)
         //see https://de.nanotec.com/produkte/156-bldc-buerstenlose-dc-motoren/, 2.1
         iCommutationSeq = iGetCommutationSeq();
         vEnableCoils(iCommutationSeq, &bUL, &bVL, &bWL, &bUH, &bVH, &bWH);
-        vSetOutputs(bUL, bVL, bWL, bUH, bVH, bWH);
+        vSetGPOs(bUL, bVL, bWL, bUH, bVH, bWH);
+
 
         //__delay_cycles(ONESECOND/100000);
     }
