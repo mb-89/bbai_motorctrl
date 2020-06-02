@@ -116,6 +116,11 @@ class DataTreeServerPlugin():
         self.rootapp = rootapp
         self.data = DataTree(op.join(op.dirname(__file__),"data.json"))
 
+    def start(self):
+        for x in self.data.upstreamVars:x.value = 0
+        for x in self.data.downstreamVars:x.value = 0
+    def stop(self):pass
+
 class DataTreeGuiPlugin():
     def __init__(self, rootapp):
         self.rootapp = rootapp

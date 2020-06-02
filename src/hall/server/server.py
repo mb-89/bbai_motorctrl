@@ -4,21 +4,17 @@ from PyQt5 import QtNetwork
 #import plugins here
 from plugins.bbai_GPIO import GPIOplugin
 from plugins.data import DataTreeServerPlugin
+from plugins.pru import PRUPlugin
 
 class App(QtCore.QCoreApplication):
+    stopped = QtCore.pyqtSignal()
     def __init__(self):
         super().__init__([])
 
         #integrate plugins here
         self.plugins = {
-            "GPIO": GPIOplugin(self),
-            "data": DataTreeServerPlugin(self)
-        }
-
-        self.GPIOs = {
-            "H1": self.plugins["GPIO"].getPinHandler(header=8, pin=12),
-            "H2": self.plugins["GPIO"].getPinHandler(header=8, pin=11),
-            "H3": self.plugins["GPIO"].getPinHandler(header=8, pin=18)
+            "data": DataTreeServerPlugin(self),
+            "pru": PRUPlugin(self)
         }
 
         self.upstreamvars = self.plugins["data"].data.getUpstreamVarDict()
@@ -35,15 +31,22 @@ class App(QtCore.QCoreApplication):
     def run(self):
         for k,v in self.plugins.items(): v.start()
         self.socket.readyRead.connect(self.recvudp)
+        self.stopped.connect(self.stop)
         self.timer.start()
         self.exec_()
 
-    def sample(self):
-        self.upstreamvars["motor.act.hall0"].value = self.GPIOs["H1"].read()
-        self.upstreamvars["motor.act.hall1"].value = self.GPIOs["H2"].read()
-        self.upstreamvars["motor.act.hall2"].value = self.GPIOs["H3"].read()
+    def stop(self):
+        self.timer.stop()
+        self.socket.close()
+        for k,v in self.plugins.items(): v.stop()
+        self.quit()
 
-        if self.downstreamvars["sys.ref.kill"].value: self.quit()
+    def sample(self):
+        #self.upstreamvars["motor.act.hall0"].value = self.GPIOs["H1"].read()
+        #self.upstreamvars["motor.act.hall1"].value = self.GPIOs["H2"].read()
+        #self.upstreamvars["motor.act.hall2"].value = self.GPIOs["H3"].read()
+
+        if self.downstreamvars["sys.ref.kill"].value: self.stopped.emit()
 
         self.upstreamvars["sys.act.upstreamcnt"].value += 1
 

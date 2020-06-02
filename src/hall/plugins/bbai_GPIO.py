@@ -33,6 +33,7 @@ class GPIOplugin():
         self._gpiofds= {}
 
     def start(self):pass
+    def stop(self):pass
 
     def getPinHandler(self, header, pin):
         if header is not None and pin is not None:
