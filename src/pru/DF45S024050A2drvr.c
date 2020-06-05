@@ -10,6 +10,14 @@
 
 #define ONESECOND (200000000)
 
+#define OFFSET_LOCALSHMEM (0x00000000)
+#define OFFSET_BIT_UL (1<<0)
+#define OFFSET_BIT_VL (1<<1)
+#define OFFSET_BIT_WL (1<<2)
+#define OFFSET_BIT_UH (1<<3)
+#define OFFSET_BIT_VH (1<<4)
+#define OFFSET_BIT_WH (1<<5)
+
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
@@ -26,6 +34,8 @@ volatile register uint32_t __R31;
 #define BIT_OUT_UH (3)
 #define BIT_OUT_VH (2)
 #define BIT_OUT_WH (9)
+
+#define BIT_OUT_CPULOAD (8)
 
 static inline bool bGetGPI(int iBit)
 {
@@ -56,40 +66,63 @@ static inline int iGetCommutationSeq()
     return iSeq;
 }
 
-static inline void vEnableCoils(int iSeq, bool *bUL, bool *bVL, bool *bWL, bool *bUH, bool *bVH, bool *bWH)
+static inline uint32_t iEnableCoils(int iSeq)
 {
-    *bUH = (iSeq == 0) || (iSeq == 5);
-    *bUL = (iSeq == 2) || (iSeq == 3);
+    uint32_t iTmp = 0;
 
-    *bVH = (iSeq == 3) || (iSeq == 4);
-    *bVL = (iSeq == 0) || (iSeq == 1);
+    iTmp |= ((iSeq == 0) || (iSeq == 5)) * OFFSET_BIT_UH;
+    iTmp |= ((iSeq == 2) || (iSeq == 3)) * OFFSET_BIT_UL;
 
-    *bWH = (iSeq == 1) || (iSeq == 2);
-    *bWL = (iSeq == 4) || (iSeq == 5);
+    iTmp |= ((iSeq == 3) || (iSeq == 4)) * OFFSET_BIT_VH;
+    iTmp |= ((iSeq == 0) || (iSeq == 1)) * OFFSET_BIT_VL;
+
+    iTmp |= ((iSeq == 1) || (iSeq == 2)) * OFFSET_BIT_WH;
+    iTmp |= ((iSeq == 4) || (iSeq == 5)) * OFFSET_BIT_WL;
+
+    return iTmp;
 }
 
-static inline void vSetGPOs(bool bUL, bool bVL, bool bWL, bool bUH, bool bVH, bool bWH)
+static inline void vSetGPOs(uint32_t iCommutationBits)
 {
-    bSetGPO(BIT_OUT_UL, bUL);
-    bSetGPO(BIT_OUT_VL, bVL);
-    bSetGPO(BIT_OUT_WL, bWL);
-    bSetGPO(BIT_OUT_UH, bUH);
-    bSetGPO(BIT_OUT_VH, bVH);
-    bSetGPO(BIT_OUT_WH, bWH);
+    bSetGPO(BIT_OUT_UL, iCommutationBits&OFFSET_BIT_UL);
+    bSetGPO(BIT_OUT_VL, iCommutationBits&OFFSET_BIT_VL);
+    bSetGPO(BIT_OUT_WL, iCommutationBits&OFFSET_BIT_WL);
+    bSetGPO(BIT_OUT_UH, iCommutationBits&OFFSET_BIT_UH);
+    bSetGPO(BIT_OUT_VH, iCommutationBits&OFFSET_BIT_VH);
+    bSetGPO(BIT_OUT_WH, iCommutationBits&OFFSET_BIT_WH);
 }
 
 void main(void)
 {
     int iCommutationSeq;
-    bool bUL, bVL, bWL, bUH, bVH, bWH;
+    int iCommutationSeqNew;
+    int iPos;
+    uint32_t iCommutationBits;
+    uint32_t *shmem = (uint32_t *) OFFSET_LOCALSHMEM;
+
+    iCommutationSeqNew = iGetCommutationSeq();
+    iCommutationSeq = iCommutationSeqNew;
+    iPos = 0;
+
+    bool bCPULoad = false;
 
     while(1) {
         //see https://de.nanotec.com/produkte/156-bldc-buerstenlose-dc-motoren/, 2.1
-        iCommutationSeq = iGetCommutationSeq();
-        vEnableCoils(iCommutationSeq, &bUL, &bVL, &bWL, &bUH, &bVH, &bWH);
-        vSetGPOs(bUL, bVL, bWL, bUH, bVH, bWH);
+        iCommutationSeqNew = iGetCommutationSeq();
 
+        if ((iCommutationSeqNew>iCommutationSeq) || (iCommutationSeqNew==0 && iCommutationSeq==5))      {iPos++;}
+        else if ((iCommutationSeqNew<iCommutationSeq) || (iCommutationSeqNew==5 && iCommutationSeq==0)) {iPos--;}
+        iCommutationSeq = iCommutationSeqNew;
 
+        iCommutationBits = iEnableCoils(iCommutationSeq);
+        vSetGPOs(iCommutationBits);
+
+        //write output to sharedmem
+        shmem[0] = iCommutationBits;
+        shmem[1] = iPos;
+
+        bSetGPO(BIT_OUT_CPULOAD, bCPULoad);
+        bCPULoad = !bCPULoad;
         //__delay_cycles(ONESECOND/100000);
     }
 }

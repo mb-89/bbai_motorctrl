@@ -49,10 +49,11 @@ class DataTree(QtCore.QObject):
                 target.appendRow(qtItem)
                 self._dict2qtModel(v,qtItem)
 
-        self.upstreamFmt = "".join((x.data(DATA_ATTR)["_type"] for x in self.upstreamVars))
-        self.upstreamLen = struct.calcsize(self.upstreamFmt)
-        self.downstreamFmt = "".join((x.data(DATA_ATTR)["_type"] for x in self.downstreamVars))
-        self.downstreamLen = struct.calcsize(self.downstreamFmt)
+        if _parent is None:
+            self.upstreamFmt = "".join((x.data(DATA_ATTR)["_type"] for x in self.upstreamVars))
+            self.upstreamLen = struct.calcsize(self.upstreamFmt)
+            self.downstreamFmt = "".join((x.data(DATA_ATTR)["_type"] for x in self.downstreamVars))
+            self.downstreamLen = struct.calcsize(self.downstreamFmt)
 
     def recvUpstreamDatagram(self, sock):
         rawData = sock.readDatagram(self.upstreamLen)
@@ -143,7 +144,7 @@ class Widget(QtWidgets.QDockWidget):
         super().__init__(app.gui)
         self.rootapp = app
         self.rootplugin = parent
-        self.setWindowTitle("Datatree")
+        self.setWindowTitle("Data")
         self.resize(600,400)
         app.gui.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self)
         self.tree = QtWidgets.QTreeView()

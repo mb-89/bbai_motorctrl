@@ -17,12 +17,12 @@ class ServerRCPlugin():
         if not self.sshcon: return
         #stop server
         self.rootapp.downstreamvars["sys.ref.kill"].value = 1
-        #unmount ramdisk, delete folder
-        stdin, stdout, stderr = self.sshcon.exec_command('umount /var/run/motorctrl_ramdisk')
-        stdout.channel.recv_exit_status()
-
-        stdin, stdout, stderr = self.sshcon.exec_command('rm -rf /var/run/motorctrl_ramdisk')
-        stdout.channel.recv_exit_status()
+        
+        ##unmount ramdisk, delete folder
+        #stdin, stdout, stderr = self.sshcon.exec_command('umount /var/run/motorctrl_ramdisk')
+        #stdout.channel.recv_exit_status()
+        #stdin, stdout, stderr = self.sshcon.exec_command('rm -rf /var/run/motorctrl_ramdisk')
+        #stdout.channel.recv_exit_status()
 
         #close ssh connection
         self.sshcon.close()

@@ -3,9 +3,8 @@
     {
         "act":
         {
-            "hall0": {"_type": "f", "stream_dir": "up"},
-            "hall1": {"_type": "f", "stream_dir": "up"},
-            "hall2": {"_type": "f", "stream_dir": "up"}
+            "commutations": {"_type": "I","stream_dir": "up"},
+            "iPos": {"_type": "I","stream_dir": "up"}
         }
     },
     "sys":
@@ -20,15 +19,6 @@
         "ref":
         {
             "kill": {"_type": "?", "stream_dir":"down"}
-        }
-    },
-    "pru2_0":
-    {
-        "act":
-        {
-            "H0": {"_type": "?", "stream_dir":"up"},
-            "H1": {"_type": "?", "stream_dir":"up"},
-            "H2": {"_type": "?", "stream_dir":"up"}
         }
     }
 }

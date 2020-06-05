@@ -49,6 +49,10 @@ class App(QtCore.QCoreApplication):
         if self.downstreamvars["sys.ref.kill"].value: self.stopped.emit()
 
         self.upstreamvars["sys.act.upstreamcnt"].value += 1
+        tmp0,tmp1 = self.plugins["pru"].read(0,0,"II",8)
+
+        self.upstreamvars["motor.act.commutations"].value = tmp0
+        self.upstreamvars["motor.act.iPos"].value = tmp1
 
         self.plugins["data"].data.sendUpstreamDatagram(self.socket)
 

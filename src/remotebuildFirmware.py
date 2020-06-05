@@ -26,7 +26,7 @@ def main():
     #call the makefiles
     runandwait(sshcon, f"dos2unix {TARGET}/**")
 
-    #runandwait(sshcon, f"cd {TARGET}/dtbo; chmod +x ./mk.sh; ./mk.sh")
+    runandwait(sshcon, f"cd {TARGET}/dtbo; chmod +x ./mk.sh; ./mk.sh")
     runandwait(sshcon, f"cd {TARGET}/pru; chmod +x ./mk.sh; ./mk.sh")
 
 def runandwait(sshcon, cmd):

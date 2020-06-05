@@ -69,6 +69,10 @@ to debug:
     ls -al /sys/kernel/debug/remoteproc/remoteproc4
     eg cat /sys/kernel/debug/remoteproc/remoteproc4/regs
 
+to debug the complete memory:
+    sudo apt-get install busybox
+    busybox devmem
+
 //pru build ----------------------------------------------------------------------------------------
 we take derek molloys stuff for the bbb first. the mem offsets dont match the beagelebone AI!!!
 the makefile works out of the box, even though we dont need a lot of what it does.
@@ -93,3 +97,7 @@ modified blinkled:
     /*P8_20*/ 0x380  0x0d -> gpo3 = UH
     /*P8_21*/ 0x37C  0x0d -> gpo2 = VH
     /*P8_22*/ 0x398  0x0d -> gpo9 = WH
+
+//pru bldc driver ----------------------------------------------------------------------------------
+    Added one more output:
+    /*P8_23*/ 0x394  0x0d -> gpo8 = Load (toggle every ctrl cycle)
