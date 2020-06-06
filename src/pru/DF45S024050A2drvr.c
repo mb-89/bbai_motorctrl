@@ -92,28 +92,36 @@ static inline void vSetGPOs(uint32_t iCommutationBits)
     bSetGPO(BIT_OUT_WH, iCommutationBits&OFFSET_BIT_WH);
 }
 
+static inline int iGetPosDiff(int iNewSeq)
+{
+    static int iOldSeq = 0;
+
+    bool CntUp  = (iNewSeq>iOldSeq) || (iNewSeq==0 && iOldSeq == 5);
+    bool CntDown= (iNewSeq<iOldSeq) || (iNewSeq==5 && iOldSeq == 0);
+    iOldSeq = iNewSeq;
+
+    int iDiff = CntUp ? 1 : CntDown ? -1 : 0;
+    return iDiff;
+}
+
 void main(void)
 {
     int iCommutationSeq;
-    int iCommutationSeqNew;
     int iPos;
+
     uint32_t iCommutationBits;
     uint32_t *shmem = (uint32_t *) OFFSET_LOCALSHMEM;
 
-    iCommutationSeqNew = iGetCommutationSeq();
-    iCommutationSeq = iCommutationSeqNew;
+    iCommutationSeq = iGetCommutationSeq();
+    iGetPosDiff(iCommutationSeq);
     iPos = 0;
 
     bool bCPULoad = false;
 
     while(1) {
         //see https://de.nanotec.com/produkte/156-bldc-buerstenlose-dc-motoren/, 2.1
-        iCommutationSeqNew = iGetCommutationSeq();
-
-        if ((iCommutationSeqNew>iCommutationSeq) || (iCommutationSeqNew==0 && iCommutationSeq==5))      {iPos++;}
-        else if ((iCommutationSeqNew<iCommutationSeq) || (iCommutationSeqNew==5 && iCommutationSeq==0)) {iPos--;}
-        iCommutationSeq = iCommutationSeqNew;
-
+        iCommutationSeq = iGetCommutationSeq();
+        iPos += iGetPosDiff(iCommutationSeq);
         iCommutationBits = iEnableCoils(iCommutationSeq);
         vSetGPOs(iCommutationBits);
 

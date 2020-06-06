@@ -10,6 +10,7 @@ from math import sin, pi
 from plugins.data import DataTree, DataTreeGuiPlugin
 from plugins.plot import PlotGuiPlugin
 from plugins.serverRC import ServerRCPlugin
+from plugins.calc import CalcPlugin
 
 class App(QtWidgets.QApplication):
     sampleSig = QtCore.pyqtSignal()
@@ -20,13 +21,14 @@ class App(QtWidgets.QApplication):
 
         #integrate plugins here
         self.plugins = {
-            "datatree": DataTreeGuiPlugin(self),
+            "data": DataTreeGuiPlugin(self),
+            "calc": CalcPlugin(self),
             "plots": PlotGuiPlugin(self),
             "serverRC": ServerRCPlugin(self)
         }
 
-        self.upstreamvars = self.plugins["datatree"].data.getUpstreamVarDict()
-        self.downstreamvars = self.plugins["datatree"].data.getDownstreamVarDict()
+        self.upstreamvars = self.plugins["data"].data.getUpstreamVarDict()
+        self.downstreamvars = self.plugins["data"].data.getDownstreamVarDict()
 
         self.socket = QtNetwork.QUdpSocket()
         self.socket.bind(QtNetwork.QHostAddress(""), 6000)
@@ -44,9 +46,9 @@ class App(QtWidgets.QApplication):
         self.exec_()
 
     def recvudp(self):
-        datatree = self.plugins["datatree"].data
+        data = self.plugins["data"].data
         while self.socket.hasPendingDatagrams():
-            datatree.recvUpstreamDatagram(self.socket)
+            data.recvUpstreamDatagram(self.socket)
 
     def sample(self):
         self.downstreamvars["sys.act.downstreamcnt"].value += 1
@@ -56,8 +58,8 @@ class App(QtWidgets.QApplication):
         #a = self.downstreamvars["test.sin.amp"].value
         #self.downstreamvars["test.sin.val"].value = sin(2*pi*f)*a
 
-        self.plugins["datatree"].data.sendDownstreamDatagram(self.socket)
         self.sampleSig.emit()
+        self.plugins["data"].data.sendDownstreamDatagram(self.socket)
 
     def __del__(self):
         self.socket.close()

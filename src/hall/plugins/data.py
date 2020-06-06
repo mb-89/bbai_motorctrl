@@ -22,6 +22,7 @@ class DataTree(QtCore.QObject):
             self.mdl.setColumnCount(2)
             self.upstreamVars = []
             self.downstreamVars = []
+            self.vardict = {}
             root = self.mdl.invisibleRootItem()
             target = root
             target.parentObj = None
@@ -45,6 +46,7 @@ class DataTree(QtCore.QObject):
                 valueDisplay.setData(qtItem, DATA_VALUEITEM)
                 qtItem.setData(valueDisplay, DATA_VALUEDISPLAY)
                 target.appendRow([qtItem, valueDisplay])
+                self.vardict[".".join(self.getFullName(qtItem))] = qtItem
             else:
                 target.appendRow(qtItem)
                 self._dict2qtModel(v,qtItem)

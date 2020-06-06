@@ -48,7 +48,7 @@ class ServerRCPlugin():
         #build remote code
 
         #reset local vars
-        self.rootapp.plugins["datatree"].start()
+        self.rootapp.plugins["data"].start()
 
         #start server
         stdin, stdout, stderr = self.sshcon.exec_command('python3 /var/run/motorctrl_ramdisk_py')

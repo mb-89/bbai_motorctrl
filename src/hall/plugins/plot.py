@@ -80,9 +80,21 @@ class Widget(QtWidgets.QDockWidget):
         self.setVisible(self.isHidden())
 
     def addTraces(self):
-        tree = self.rootapp.plugins["datatree"].widget.tree
-        data = self.rootapp.plugins["datatree"].data
-        mdl = data.mdl
+
+        tree_data = self.rootapp.plugins["data"].widget.tree
+        tree_calc = self.rootapp.plugins["calc"].widget.tree
+
+        if tree_data.hasFocus():
+            data = self.rootapp.plugins["data"].data
+            mdl = data.mdl
+            tree = tree_data
+        elif tree_calc.hasFocus():
+            data = self.rootapp.plugins["calc"]
+            mdl = data.mdl
+            tree = tree_calc
+        else: 
+            return
+
         target = self.traceMdl.invisibleRootItem()
 
         traceItems = []
