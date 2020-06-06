@@ -1,0 +1,18 @@
+#Docs: http://elinux.org/Beagleboard:U-boot_partitioning_layout_2.0
+
+uname_r=4.14.108-ti-r131
+#uuid=
+
+enable_uboot_overlays=1
+disable_uboot_overlay_video=1
+disable_uboot_overlay_audio=1
+disable_uboot_overlay_wireless=1
+uboot_overlay_addr0=/lib/firmware/BBAI_HW.dtbo
+
+cmdline=coherent_pool=1M net.ifnames=0 rng_core.default_quality=100 quiet
+
+#In the event of edid real failures, uncomment this next line:
+#cmdline=coherent_pool=1M net.ifnames=0 rng_core.default_quality=100 quiet video=HDMI-A-1:1024x768@60e
+
+##enable Generic eMMC Flasher:
+#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3-no-eeprom.sh

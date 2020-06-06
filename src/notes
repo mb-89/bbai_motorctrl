@@ -1,0 +1,103 @@
+//device tree stuff --------------------------------------------------------------------------------
+
+see 
+https://www.element14.com/community/community/project14/visionthing/blog/2019/11/16/beagleboard-ai-brick-recovery-procedure#jive_content_id_a_BBAI_compatible_dts_file
+on how to construct a dts for the bbai
+
+in case a device tree breaks the boot:
+    boot from sd-card, then:
+
+    sudo mkdir /mnt/emmc
+    sudo mount -t ext4 /dev/mmcblk1p1 /mnt/emmc
+
+    goto uenv and fix it:
+    sudo nano /mnt/emmc/boot/uEnv.txt
+
+    sudo umount /mnt/emmc
+
+to see the loaded tree:
+    /proc/device-tree/chosen/
+    see pinmuxer: cat /sys/kernel/debug/pinctrl/4a003400.pinmux/pins
+    show-pins
+
+at the beginning, we set all inputs to "unused" (mode 15) so we can clearly see that
+we have control over all of them. later, we can enable only the pins that we need and the
+corresponding subsystems.
+
+//first running server without pru -----------------------------------------------------------------
+We use the pins from the sread.sh and read.py scripts in mode 14, so we can reuse them as pru pins later:
+
+    see DF45S024050-A2 for motor pins:
+
+    U  = pin1@Motor, grey wire
+    V  = pin2@Motor, brown wire
+    W  = pin3@Motor, yellow wire
+
+    GND= Pin4@Motor, Black wire
+
+    H1 = pin5@Motor, green wire
+    H2 = pin6@Motor, blue wire
+    H3 = pin7@Motor, white wire
+
+    VHall = pin8@Motor, red wire
+
+#pin 8.12 = 3_10 = H1
+#pin 8.11 = 3_11 = H2
+#pin 8.18 = 4_9  = H3
+
+//pru basics ---------------------------------------------------------------------------------------
+the pru is active in the default device tree overlay. to check that the pruss is actiated after reload:
+    dmesg |grep pru
+
+to check the kernel level modules:
+    lsmod |grep pru
+
+to check on the prus via remoteproc:
+which firmware is loaded:
+    cat /sys/class/remoteproc/remoteproc4/firmware -> am57xx-pru1_0-fw (by default)
+    cat /sys/class/remoteproc/remoteproc5/firmware -> am57xx-pru1_1-fw (by default)
+    cat /sys/class/remoteproc/remoteproc6/firmware -> am57xx-pru2_0-fw (by default)
+    cat /sys/class/remoteproc/remoteproc7/firmware -> am57xx-pru2_1-fw (by default)
+
+to load firmware:
+    echo <name, found in /lib/firmware> > /sys/class/remoteproc/remoteprocX/firmware
+
+to start/stop:
+    echo start/stop > /sys/class/remoteproc/remoteprocX/state
+
+to debug:
+    ls -al /sys/kernel/debug/remoteproc/remoteproc4
+    eg cat /sys/kernel/debug/remoteproc/remoteproc4/regs
+
+to debug the complete memory:
+    sudo apt-get install busybox
+    busybox devmem
+
+//pru build ----------------------------------------------------------------------------------------
+we take derek molloys stuff for the bbb first. the mem offsets dont match the beagelebone AI!!!
+the makefile works out of the box, even though we dont need a lot of what it does.
+
+modified blinkled:
+1)  modify device tree so that we have three output pins and three input pins on one pru core, 
+    blink on the outputs.
+    We use pru2_0, because it has the most gpis/gpos exposed to the headers.
+
+    The modes are 
+    12+0x40000= 0x4000c for inputs,
+    13        = 0x0d   for outputs
+
+    /*P8_03*/ 0x39C  0x4000c = H1 = gpi10
+    /*P8_04*/ 0x3A0  0x4000c = H2 = gpi11
+    /*P8_05*/ 0x38C  0x4000c = H3 = gpi6
+
+    /*P8_06*/ 0x390  0x0d -> gpo7 = UL
+    /*P8_07*/ 0x2EC  0x0d -> gpo16= VL
+    /*P8_08*/ 0x2F0  0x0d -> gpo20= WL
+
+    /*P8_20*/ 0x380  0x0d -> gpo3 = UH
+    /*P8_21*/ 0x37C  0x0d -> gpo2 = VH
+    /*P8_22*/ 0x398  0x0d -> gpo9 = WH
+
+//pru bldc driver ----------------------------------------------------------------------------------
+    Added one more output:
+    /*P8_23*/ 0x394  0x0d -> gpo8 = Load (toggle every ctrl cycle)

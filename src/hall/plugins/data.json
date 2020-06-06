@@ -1,0 +1,24 @@
+{
+    "motor":
+    {
+        "act":
+        {
+            "commutations": {"_type": "I","stream_dir": "up"},
+            "iPos": {"_type": "I","stream_dir": "up"}
+        }
+    },
+    "sys":
+    {
+        "act":
+        {
+            "upstreamcnt": {"_type": "I","stream_dir": "up"},
+            "downstreamcnt": {"_type": "I","stream_dir": "down"},
+            "uptimeserver": {"_type": "f","stream_dir": "up"},
+            "uptimeclient": {"_type": "f","stream_dir": "down"}
+        },
+        "ref":
+        {
+            "kill": {"_type": "?", "stream_dir":"down"}
+        }
+    }
+}
