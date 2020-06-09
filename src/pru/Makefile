@@ -8,12 +8,10 @@ CURRENT_DIR := $(notdir $(patsubst %/,%,$(dir $(MKFILE_PATH))))
 PROJ_NAME   =$(CURRENT_DIR)
 LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 LIBS        =--library=$(PRU_CGT)/lib/rpmsg_lib.lib
-INCLUDE     =--include_path=$(PRU_CGT)/include --include_path=$(PRU_CGT)/include/am335x --include_path=/usr/share/ti/cgt-pru/include --include_path=/usr/share/ti/cgt-pru/lib
+INCLUDE     =--include_path=$(PRU_CGT)/include --include_path=$(PRU_CGT)/include/am572x_2_0 --include_path=/usr/share/ti/cgt-pru/include --include_path=/usr/share/ti/cgt-pru/lib
 STACK_SIZE  =0x100
 HEAP_SIZE   =0x100
 GEN_DIR     =gen
-PRU0        :=/sys/class/remoteproc/remoteproc1
-PRU1        :=/sys/class/remoteproc/remoteproc2
 
 #Common compiler and linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
 CFLAGS=-v3 -O2 --display_error_number --endian=little --hardware_mac=on --obj_directory=$(GEN_DIR) --pp_directory=$(GEN_DIR) -ppd -ppa
@@ -39,27 +37,6 @@ printEnd:
 	@echo '************************************************************'
 	@echo ''
 
-install_PRU0:
-	@echo ''
-	@echo 'Stopping current PRU0 application ($(PRU0))'
-	@echo stop | sudo tee $(PRU0)/state
-	@echo 'Installing firmware'
-	@sudo cp $(TARGET) /lib/firmware/am335x-pru0-fw
-	@echo 'Deploying firmware'
-	@echo am335x-pru0-fw | sudo tee $(PRU0)/firmware
-	@echo 'Starting new PRU0 application'
-	@echo start | sudo tee $(PRU0)/state
-
-install_PRU1:
-	@echo ''
-	@echo 'Stopping current PRU1 application ($(PRU1))'
-	@echo stop | sudo tee $(PRU1)/state
-	@echo 'Installing firmware'
-	@sudo cp $(TARGET) /lib/firmware/am335x-pru1-fw
-	@echo 'Deploying firmware'
-	@echo am335x-pru1-fw | sudo tee $(PRU1)/firmware
-	@echo 'Starting new PRU1 application'
-	@echo start | sudo tee $(PRU1)/state
 
 # Invokes the linker (-z flag) to make the .out file
 $(TARGET): $(OBJECTS) $(LINKER_COMMAND_FILE)

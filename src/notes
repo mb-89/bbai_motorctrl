@@ -101,3 +101,26 @@ modified blinkled:
 //pru bldc driver ----------------------------------------------------------------------------------
     Added one more output:
     /*P8_23*/ 0x394  0x0d -> gpo8 = Load (toggle every ctrl cycle)
+
+//ld293d tests -------------------------------------------------------------------------------------
+Min output voltage = 5V
+Freq up to 25 kHz were no problem, even tough data sheet says max 5kHz (no load though)
+changed bits to high/enabled:
+    #define BIT_OUT_VH (3)  /*P8_20*/
+    #define BIT_OUT_WE (2)  /*P8_21*/
+    #define BIT_OUT_WH (9)  /*P8_22*/
+
+    #define BIT_OUT_CPULOAD (8) /*P8_23*/
+
+    #define BIT_OUT_UE (5)      /*P8_24*/
+    #define BIT_OUT_UH (4)      /*P8_25*/
+    #define BIT_OUT_VE (11)     /*P8_31*/
+
+    test:   VH  WE  WH  UE  UH  VE
+    pos0:   0   0   0   1   1   1   ok
+    pos1:   0   1   1   0   0   1   ok
+    pos2:   0   1   1   1   0   0   ok
+    pos3:   1   0   0   1   0   1   ok
+    pos4:   1   1   0   0   0   1   ok
+    pos5:   0   1   0   1   1   0   ok
+
