@@ -36,6 +36,15 @@ volatile register uint32_t __R31;
 #define BIT_OUT_VE (1<<11)      /*P8_31*/
 #define BIT_OUT_CPULOAD (1<<8)  /*P8_23*/
 
+#define UHVL (BIT_OUT_UE|BIT_OUT_UH|BIT_OUT_VE)
+#define WHVL (BIT_OUT_WE|BIT_OUT_WH|BIT_OUT_VE)
+#define WHUL (BIT_OUT_WE|BIT_OUT_WH|BIT_OUT_UE)
+#define VHUL (BIT_OUT_VE|BIT_OUT_VH|BIT_OUT_UE)
+#define VHWL (BIT_OUT_VE|BIT_OUT_VH|BIT_OUT_WE)
+#define UHWL (BIT_OUT_UE|BIT_OUT_UH|BIT_OUT_WE)
+
+#define UVWL (BIT_OUT_UE|BIT_OUT_VE|BIT_OUT_WE)
+
 #define ANGLE_360DEG (62832) //angle in rad*10000
 #define ANGLE_180DEG (31416) //angle in rad*10000
 #define ANGLE_60DEG (10472) //angle in rad*10000
@@ -49,12 +58,12 @@ static inline int Pos_iGetEl()
 
     switch (iHallIdx)
     {
-        case BIT_IN_H3:             iAngle = ANGLE_60DEG*0 + ANGLE_30DEG;  break;
-        case BIT_IN_H3|BIT_IN_H2:   iAngle = ANGLE_60DEG*1 + ANGLE_30DEG;  break;
-        case BIT_IN_H2:             iAngle = ANGLE_60DEG*2 + ANGLE_30DEG;  break;
-        case BIT_IN_H1|BIT_IN_H2:   iAngle = ANGLE_60DEG*3 + ANGLE_30DEG;  break;
-        case BIT_IN_H1:             iAngle = ANGLE_60DEG*4 + ANGLE_30DEG;  break;
-        case BIT_IN_H1|BIT_IN_H3:   iAngle = ANGLE_60DEG*5 + ANGLE_30DEG;  break;
+        case BIT_IN_H2:             iAngle = ANGLE_60DEG*0 + ANGLE_30DEG;  break;
+        case BIT_IN_H2|BIT_IN_H1:   iAngle = ANGLE_60DEG*1 + ANGLE_30DEG;  break;
+        case BIT_IN_H1:             iAngle = ANGLE_60DEG*2 + ANGLE_30DEG;  break;
+        case BIT_IN_H1|BIT_IN_H3:   iAngle = ANGLE_60DEG*3 + ANGLE_30DEG;  break;
+        case BIT_IN_H3:             iAngle = ANGLE_60DEG*4 + ANGLE_30DEG;  break;
+        case BIT_IN_H3|BIT_IN_H2:   iAngle = ANGLE_60DEG*5 + ANGLE_30DEG;  break;
 
         default:                    iAngle = 0;  break;//this is an error!
     }
@@ -108,14 +117,14 @@ static inline void vCommutate(int iPhase)
         default:
         case 0: break;                                      //0 = idle, clear all
 
-        case 1: iTmp |= (BIT_OUT_VE|BIT_OUT_VH|BIT_OUT_WE); break;//phase for angle 0-60    @CW
-        case 2: iTmp |= (BIT_OUT_UE|BIT_OUT_UH|BIT_OUT_WE); break;//phase for angle 60-120  @CW
-        case 3: iTmp |= (BIT_OUT_UE|BIT_OUT_UH|BIT_OUT_VE); break;//phase for angle 120-180 @CW
-        case 4: iTmp |= (BIT_OUT_WE|BIT_OUT_WH|BIT_OUT_VE); break;//phase for angle 180-240 @CW
-        case 5: iTmp |= (BIT_OUT_WE|BIT_OUT_WH|BIT_OUT_UE); break;//phase for angle 240-300 @CW
-        case 6: iTmp |= (BIT_OUT_VE|BIT_OUT_VH|BIT_OUT_UE); break;//phase for angle 300-360 @CW
+        case 1: iTmp |= UHVL; break;//phase for angle 0-60    @CW
+        case 2: iTmp |= WHVL; break;//phase for angle 60-120  @CW
+        case 3: iTmp |= WHUL; break;//phase for angle 120-180 @CW
+        case 4: iTmp |= VHUL; break;//phase for angle 180-240 @CW
+        case 5: iTmp |= VHWL; break;//phase for angle 240-300 @CW
+        case 6: iTmp |= UHWL; break;//phase for angle 300-360 @CW
 
-        case -1: iTmp |= (BIT_OUT_VE|BIT_OUT_UE|BIT_OUT_WE); break;//special case for eddy-brake: short the windings to 0
+        case -1: iTmp |= UVWL; break;//special case for eddy-brake: short the windings to 0
     }
     __GPO__ = iTmp;
 }
