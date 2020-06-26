@@ -9,22 +9,19 @@ def main():
     sshcon.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     sshcon.connect("192.168.0.20", username="root", password="bbai")#yeah i know.
     #create ramdisk
-    stdin, stdout, stderr = sshcon.exec_command(f'mkdir {TARGET}')
-    stdin, stdout, stderr = sshcon.exec_command(f'shopt -s globstar')
-    stdout.channel.recv_exit_status()
-    stdin, stdout, stderr = sshcon.exec_command(f'mount -t ramfs ramfs {TARGET}')
-    stdout.channel.recv_exit_status()
+    runandwait(sshcon, f'mkdir {TARGET}')
+    runandwait(sshcon, f'mount -t ramfs ramfs {TARGET}')
 
     #copy stuff to ramdisk
-    stdin, stdout, stderr = sshcon.exec_command(f'mkdir {TARGET}/pru'); stdout.channel.recv_exit_status()
-    stdin, stdout, stderr = sshcon.exec_command(f'mkdir {TARGET}/dtbo'); stdout.channel.recv_exit_status()
+    runandwait(sshcon, f'mkdir {TARGET}/pru')
+    runandwait(sshcon, f'mkdir {TARGET}/dtbo')
 
     with sshcon.open_sftp() as sftp: 
         recursiveput(sftp, op.abspath(op.join(op.dirname(__file__),"pru")), TARGET+"/pru")
         recursiveput(sftp, op.abspath(op.join(op.dirname(__file__),"dtbo")), TARGET+"/dtbo")
 
     #call the makefiles
-    runandwait(sshcon, f"dos2unix {TARGET}/**")
+    runandwait(sshcon, f"shopt -s globstar; dos2unix {TARGET}/**")
 
     runandwait(sshcon, f"cd {TARGET}/dtbo; chmod +x ./mk.sh; ./mk.sh")
     runandwait(sshcon, f"cd {TARGET}/pru; chmod +x ./mk.sh; ./mk.sh")

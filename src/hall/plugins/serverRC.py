@@ -10,9 +10,17 @@ class ServerRCPlugin():
     def getActionDict(self):
         return {
             "kill": (self.killserver, f"Ctrl+k"),
+            "reboot": (self.rebootserver, f"Ctrl+Shift+k"),
             "start": (self.startserver, f"Ctrl+s")
         }
     
+    def rebootserver(self):
+        if not self.sshcon: return
+        self.rootapp.downstreamvars["sys.ref.kill"].value = 1
+        stdin, stdout, stderr = self.sshcon.exec_command('reboot')
+        self.sshcon.close()
+        self.sshcon = None
+
     def killserver(self):
         if not self.sshcon: return
         #stop server

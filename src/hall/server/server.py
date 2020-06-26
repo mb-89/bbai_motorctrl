@@ -1,5 +1,6 @@
 from PyQt5 import QtCore
 from PyQt5 import QtNetwork
+from math import pi
 
 #import plugins here
 from plugins.bbai_GPIO import GPIOplugin
@@ -27,6 +28,8 @@ class App(QtCore.QCoreApplication):
         self.timer = QtCore.QTimer()
         self.timer.setInterval(10)
         self.timer.timeout.connect(self.sample)
+        self.iPhaseOld = 0
+        self.clkDiv = 0
 
     def run(self):
         for k,v in self.plugins.items(): v.start()
@@ -42,17 +45,25 @@ class App(QtCore.QCoreApplication):
         self.quit()
 
     def sample(self):
-        #self.upstreamvars["motor.act.hall0"].value = self.GPIOs["H1"].read()
-        #self.upstreamvars["motor.act.hall1"].value = self.GPIOs["H2"].read()
-        #self.upstreamvars["motor.act.hall2"].value = self.GPIOs["H3"].read()
-
         if self.downstreamvars["sys.ref.kill"].value: self.stopped.emit()
-
         self.upstreamvars["sys.act.upstreamcnt"].value += 1
-        tmp0,tmp1 = self.plugins["pru"].read(0,0,"II",8)
 
-        self.upstreamvars["motor.act.commutations"].value = tmp0
-        self.upstreamvars["motor.act.iPos"].value = tmp1
+        ael,incs = self.plugins["pru"].read(0,0,"ii",8)
+        self.upstreamvars["motor.act.iAngleEl"].value = ael
+        self.upstreamvars["motor.act.iIncs"].value = incs
+
+        
+        self.plugins["pru"].write([
+            self.downstreamvars["motor.ref.iCtrlMode"].value,
+            self.downstreamvars["motor.ref.iComPh"].value,
+        ],0,8,"Ii",8)
+
+        if self.clkDiv==4:
+            self.iPhaseOld+=1
+            if self.iPhaseOld>6:self.iPhaseOld-=6
+            self.clkDiv = 0
+        else:
+            self.clkDiv+=1
 
         self.plugins["data"].data.sendUpstreamDatagram(self.socket)
 
@@ -60,7 +71,6 @@ class App(QtCore.QCoreApplication):
         datatree = self.plugins["data"].data
         while self.socket.hasPendingDatagrams():
             datatree.recvDownstreamDatagram(self.socket)
-
 
     def __del__(self):
         self.socket.close()

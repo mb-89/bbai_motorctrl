@@ -3,18 +3,24 @@
     {
         "act":
         {
-            "commutations": {"_type": "I","stream_dir": "up"},
-            "iPos": {"_type": "I","stream_dir": "up"}
+            "iAngleEl":     {"_type": "I","stream_dir": "up"},
+            "iIncs":        {"_type": "i","stream_dir": "up"},
+            "rpm":          {"_type": "i","stream_dir": "down"}
+        },
+        "ref":
+        {
+            "iCtrlMode": {"_type": "I","stream_dir": "down"},
+            "iComPh":    {"_type": "i","stream_dir": "down"}
         }
     },
     "sys":
     {
         "act":
         {
-            "upstreamcnt": {"_type": "I","stream_dir": "up"},
-            "downstreamcnt": {"_type": "I","stream_dir": "down"},
-            "uptimeserver": {"_type": "f","stream_dir": "up"},
-            "uptimeclient": {"_type": "f","stream_dir": "down"}
+            "upstreamcnt":      {"_type": "I","stream_dir": "up"},
+            "downstreamcnt":    {"_type": "I","stream_dir": "down"},
+            "uptimeserver":     {"_type": "f","stream_dir": "up"},
+            "uptimeclient":     {"_type": "f","stream_dir": "down"}
         },
         "ref":
         {

@@ -26,6 +26,10 @@ class PRUPlugin():
         if core != 0: return None
         return self._mem0.read(offset, format, size)
 
+    def write(self, values, core, offset, format, size=None):
+        if core != 0: return
+        self._mem0.write(offset, format, values)
+
 class Mem():
     def __init__(self, offset, size):
         self._fd = open("/dev/mem", "r+b" )
@@ -34,6 +38,11 @@ class Mem():
     def read(self,offset,format, size = None):
         if size is None: size = struct.calcsize(format)
         return struct.unpack(format, self._mem[offset:offset+size])
+
+    def write(self, offset, format, values, size = None):
+        if size is None: size = struct.calcsize(format)
+        val = struct.pack(format, *values)
+        self._mem[offset:offset+size] = val
 
     def close(self):
         self._mem.close()
