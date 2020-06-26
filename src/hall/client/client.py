@@ -43,6 +43,9 @@ class App(QtWidgets.QApplication):
         self.socket.readyRead.connect(self.recvudp)
         self.timer.start()
         self.t0 = time.time()
+        self.inc0 = 0
+        self.rpmfilt = 0
+
         self.exec_()
 
     def recvudp(self):
@@ -52,7 +55,21 @@ class App(QtWidgets.QApplication):
 
     def sample(self):
         self.downstreamvars["sys.act.downstreamcnt"].value += 1
-        #self.downstreamvars["sys.act.uptimeclient"].value = time.time()-self.t0
+        
+        now = time.time()
+        dt = max(now-self.t0, 0.005)
+        self.t0 = now
+        
+        incs = self.upstreamvars["motor.act.iIncs"].value
+        dI = incs-self.inc0
+        self.inc0 = incs
+
+        rpm = (dI/48)/(dt/60.0)
+        tfilt = 1.0
+        self.rpmfilt += (rpm-self.rpmfilt)/tfilt*dt
+
+        self.downstreamvars["motor.act.rpm"].value = int(self.rpmfilt)
+
 
         #f = self.downstreamvars["test.sin.freq"].value
         #a = self.downstreamvars["test.sin.amp"].value

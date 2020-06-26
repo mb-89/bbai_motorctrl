@@ -4,7 +4,8 @@
         "act":
         {
             "iAngleEl":     {"_type": "I","stream_dir": "up"},
-            "iAngleMech":   {"_type": "i","stream_dir": "up"}
+            "iIncs":        {"_type": "i","stream_dir": "up"},
+            "rpm":          {"_type": "i","stream_dir": "down"}
         },
         "ref":
         {

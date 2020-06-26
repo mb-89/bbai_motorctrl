@@ -48,9 +48,9 @@ class App(QtCore.QCoreApplication):
         if self.downstreamvars["sys.ref.kill"].value: self.stopped.emit()
         self.upstreamvars["sys.act.upstreamcnt"].value += 1
 
-        ael,amech = self.plugins["pru"].read(0,0,"ii",8)
+        ael,incs = self.plugins["pru"].read(0,0,"ii",8)
         self.upstreamvars["motor.act.iAngleEl"].value = ael
-        self.upstreamvars["motor.act.iAngleMech"].value = amech
+        self.upstreamvars["motor.act.iIncs"].value = incs
 
         
         self.plugins["pru"].write([

@@ -35,8 +35,8 @@ We use the pins from the sread.sh and read.py scripts in mode 14, so we can reus
 
     GND= Pin4@Motor, Black wire
 
-    H1 = pin5@Motor, green wire
-    H2 = pin6@Motor, blue wire
+    H2 = pin5@Motor, green wire
+    H1 = pin6@Motor, blue wire
     H3 = pin7@Motor, white wire
 
     VHall = pin8@Motor, red wire
