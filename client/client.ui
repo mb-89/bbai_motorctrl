@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>537</width>
-    <height>451</height>
+    <width>1086</width>
+    <height>716</height>
    </rect>
   </property>
   <widget class="QWidget" name="centralWidget"/>
@@ -17,10 +17,21 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>537</width>
+     <width>1086</width>
      <height>21</height>
     </rect>
    </property>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
