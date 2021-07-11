@@ -4,7 +4,7 @@ from PyQt5 import QtNetwork
 import os.path as op
 
 from plugins.log import Plugin as Plugin_log
-from plugins.serverRC import Plugin as Plugin_serverRC
+from plugins.remotectrl import Plugin as Plugin_remotectrl
 
 class App(QtWidgets.QApplication):
     def __init__(self):
@@ -14,7 +14,7 @@ class App(QtWidgets.QApplication):
         self.isClient = True
         self.plugins = {
             "log":Plugin_log(self),
-            "serverRC":Plugin_serverRC(self)
+            "remotectrl":Plugin_remotectrl(self)
             }
         self.running = False
         self.aboutToQuit.connect(self.stop)
@@ -45,20 +45,54 @@ class Gui(QtWidgets.QMainWindow):
         self.rootapp.setApplicationDisplayName("bbai.motorctrl.client")
 
     def start(self):
+        #build plugin menu
+        self.ui.PluginsBar = QtWidgets.QMenuBar(self.ui.menuBar)
+        self.ui.PluginsMenu= QtWidgets.QMenu("Plugins", self.ui.PluginsBar)
+        self.ui.PluginsMenu.plugins = {}
+        self.ui.PluginsBar.addMenu(self.ui.PluginsMenu)
+        self.ui.menuBar.setCornerWidget(self.ui.PluginsBar)
+
+        #build toolbox
+        #self.ui.ToolBox = ToolBox(self.rootapp)
+        #self.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.ui.ToolBox)
+
         #register shortcuts
         self.actions = {}
         for k,v in self.rootapp.plugins.items():
             acts = v.getActionDict()
             for actname, act in acts.items():
-                self.actions[k+"."+actname] = self.registerAction(*act)
+                self.actions[k+"."+actname] = self.registerAction(k,actname,*act)
         self.show()
 
-    def registerAction(self, fn, shortcut = None, menuEntry = None, ToolbarEntry = None):
+    def registerAction(self, pluginname, actname, fn, shortcut = None, ToolbarEntry = None):
         action = QtWidgets.QAction(self)
         action.triggered.connect(fn)
+        action.setText(actname)
         self.addAction(action)
+        menu = self.ui.PluginsMenu
+        plugmenu = menu.plugins.get(pluginname)
+        if not plugmenu:
+            plugmenu = QtWidgets.QMenu(menu)
+            plugmenu.setTitle(pluginname)
+            menu.plugins[pluginname] = plugmenu
+            menu.addMenu(plugmenu)
+        plugmenu.addAction(action)
 
         if shortcut: action.setShortcut(shortcut)
 
         return action
 
+class ToolBox(QtWidgets.QDockWidget):
+    def __init__(self, app):
+        super().__init__()
+        self.rootapp = app
+        ui = app.gui.ui
+        self.widget = QtWidgets.QToolBox(self)
+        self.tabs = {}
+        self.setWindowTitle('Toolbox')
+        self.addTab('Tab1')
+        self.addTab('Tab2')
+
+    def addTab(self, name):
+        tab = self.widget.addItem(QtWidgets.QWidget(), name)
+        self.tabs[name] = tab

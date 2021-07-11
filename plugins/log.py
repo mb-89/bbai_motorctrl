@@ -69,7 +69,7 @@ class ClientSideLogger():
         #sys.stderr = masterlog._STDerrLogger
 
         #add to file
-        fh = logging.FileHandler("bbai_motorctrl.log",mode="w")
+        fh = logging.FileHandler("logs and notes/bbai_motorctrl.log",mode="w")
         fh.setLevel(logging.DEBUG)
         fh.setFormatter(masterlog._fmt)
         #masterlog.addHandler(fh)

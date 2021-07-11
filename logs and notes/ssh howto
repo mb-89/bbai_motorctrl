@@ -1,0 +1,21 @@
+on windows machine:
+
+    create folder: ssh.
+    There:
+    ssh-keygen -t rsa -b 2048
+    filename:bbai
+    passphrase:leave empty
+    -> creates files ssh/bbai, ssh/bbai.pub
+
+on bbai:
+    log into root@bbai.
+    mkdir .ssh
+    cd .ssh
+    move bbai.pub from windows to linux, ssh/authorized_keys
+    mv bbai.pub authorized_keys
+    dos2unix authorized_keys
+    chmod 400 authorized_keys
+
+on windows machine:
+    ssh -i ssh/bbai root@192.168.0.20
+    logs in without asking for pw, can be used by qt process
