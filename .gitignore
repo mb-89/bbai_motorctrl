@@ -132,3 +132,5 @@ dmypy.json
 gen/
 *.pdf
 *.png
+ssh/bbai
+ssh/bbai.pub
